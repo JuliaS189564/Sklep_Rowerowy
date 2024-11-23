@@ -1,6 +1,6 @@
 ---
 title: "Sklep_Rowerowy"
-author: "Julia Sulka"
+author: "Julia Sulka, Julia Urban, Barbara Michalska"
 date: "2024-11-23"
 output: html_document
 ---
