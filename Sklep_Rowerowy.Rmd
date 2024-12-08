@@ -29,12 +29,26 @@ library(ggplot2)
 
 
 n_miss(data)
-
+  
 # Wizualizacja brakujących danych
-vis_miss(data, sort = TRUE,warn_large_data = FALSE,
-         show_perc = TRUE)+
-  labs(title = "Wizualizacja brakujących danych",
-       subtitle = "Zawiera procent braków w poszczególnych kolumnach")
+vis_miss(data, sort = TRUE, warn_large_data = FALSE, show_perc = TRUE) +
+  labs(
+    title = "Wizualizacja brakujących danych",
+    subtitle = "Zawiera procent braków w poszczególnych kolumnach"
+  ) +
+  theme_minimal() + # Minimalny motyw dla lepszej czytelności
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    plot.subtitle = element_text(size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  scale_fill_manual(
+    values = c("#28B463","#FF5733"), # Kolor dla danych brakujących i obecnych
+    name = "Status danych",          # Tytuł legendy
+    labels = c("Obecne", "Brakujące") # Opis w legendzie
+  )
+
+
 gg_miss_upset(
   data, 
   nsets = 13, 
@@ -42,6 +56,36 @@ gg_miss_upset(
   sets.bar.color = "Violet"       # Kolor pasków dla zestawów
 )
 
+ggplot(data = data, aes(x = Income, y = Age)) +
+  geom_point(color = "grey70", size = 3) +      # Punkty dla kompletnych danych
+  geom_miss_point(size = 3) +                  # Punkty dla braków
+  scale_color_manual(
+    values = c("darkorange", "cyan4"),         # Kolory dla obecnych i brakujących
+    name = "Status danych",                    # Tytuł legendy
+    labels = c("Obecne", "Brakujące")          # Etykiety w legendzie
+  ) +
+  theme_minimal() +
+  facet_wrap(~ Region, scales = "free") +      # Grupowanie według Regionu
+  labs(
+    title = "Brakujące dane w relacji Income i Age",
+    subtitle = "Podział na regiony",
+    x = "Dochód",
+    y = "Wiek"
+  )
+
+
+
+
+# Tworzenie wykresu z geom_miss_point
+ggplot(data, aes(x = Income, y = Age)) +
+  geom_miss_point() +
+  labs(
+    title = "Brakujące wartości w danych",
+    subtitle = "Analiza powiązań braków pomiędzy Income i Age",
+    x = "Dochód",
+    y = "Wiek"
+  ) +
+  theme_minimal()
 
 gg_miss_fct(data, fct = Gender)
 
