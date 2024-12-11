@@ -95,3 +95,17 @@ gg_miss_fct(data, fct = Region)
 gg_miss_fct(data, fct = Education)
 
 ```
+
+``` {r change_missing_data}
+
+# Wypełnienie braków danych
+
+library(dlookr)
+library(VIM)
+
+data_withoutNA <- hotdeck(data)   # Funkcja hotdeck uzupełnia braki danych
+
+n_miss(data_withoutNA)            # Ponowne sprawdzenie czy w danych są braki
+
+```
+
