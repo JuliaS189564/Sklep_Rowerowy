@@ -107,5 +107,7 @@ data_withoutNA <- hotdeck(data)   # Funkcja hotdeck uzupełnia braki danych
 
 n_miss(data_withoutNA)            # Ponowne sprawdzenie czy w danych są braki
 
+data_withoutNA <- hotdeck(data, imp_var = FALSE) #Poprawienie funkcji hotdeck
+
 ```
 
