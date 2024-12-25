@@ -155,3 +155,33 @@ if (sum(violations) == 0) {
   print(summary(violations))
 }
 ```
+
+```{r}
+#Czyszczenie nazw zmiennych
+install.packages("janitor")
+library(janitor)
+zbior <- janitor::clean_names(data_withoutNA)
+```
+
+```{r}
+#Utworzenie wykresu kolumnowego zależności między odległością od pracy, a zakupem roweru
+library(ggplot2)
+library(dplyr)
+zbior$commute_distance <- factor(zbior$commute_distance, levels = c("0-1 Miles", "1-2 Miles", "2-5 Miles", "5-10 Miles", "10+ Miles"))
+zbior$purchased_bike <- factor(zbior$purchased_bike, levels = c("Yes", "No"))
+ ggplot(zbior %>% filter(purchased_bike =="Yes"), aes(x=commute_distance, fill=purchased_bike)) +
+   geom_bar(position = "dodge") +
+   xlab("Odległość od pracy") +
+   ylab("Liczba osób") + 
+   labs(fill = "Zakup roweru") +
+   ggtitle("Odległość od pracy, a zakup roweru") +
+   scale_fill_manual(values = "#228b22") +
+   theme_light()
+ 
+```
+
+
+```{r}
+
+```
+
