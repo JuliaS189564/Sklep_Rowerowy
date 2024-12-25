@@ -169,7 +169,7 @@ library(ggplot2)
 library(dplyr)
 zbior$commute_distance <- factor(zbior$commute_distance, levels = c("0-1 Miles", "1-2 Miles", "2-5 Miles", "5-10 Miles", "10+ Miles"))
 zbior$purchased_bike <- factor(zbior$purchased_bike, levels = c("Yes", "No"))
- ggplot(zbior %>% filter(purchased_bike =="Yes"), aes(x=commute_distance, fill=purchased_bike)) +
+wykres_1 <- ggplot(zbior %>% filter(purchased_bike =="Yes"), aes(x=commute_distance, fill=purchased_bike)) +
    geom_bar(position = "dodge") +
    xlab("Odległość od pracy") +
    ylab("Liczba osób") + 
@@ -178,10 +178,46 @@ zbior$purchased_bike <- factor(zbior$purchased_bike, levels = c("Yes", "No"))
    scale_fill_manual(values = "#228b22") +
    theme_light()
  
-```
+install.packages("plotly", dependencies = TRUE)
 
+library(plotly)
+
+ggplotly(wykres_1)
+ 
+ ggsave("figs/odleglosc_od_pracy.png",
+  width = 12,
+  height = 10,
+  scale = 0.5,
+  dpi = 1200)
+ 
+ 
+ 
+```
 
 ```{r}
+#Utworzenie wykresu zależności między płcią, typem zawodu, a zakupem roweru
+library(ggplot2)
+library(dplyr)
+zbior$gender <- factor(zbior$gender, levels = c("Female", "Male"))
+zbior$purchased_bike <- factor(zbior$purchased_bike, levels = c("Yes", "No"))
+
+ wykres_2 <- ggplot(zbior %>% filter(purchased_bike =="Yes"), aes(x=occupation, fill=gender)) +
+   geom_bar(position = "dodge") +
+   xlab(" Typ zawodu") +
+   ylab("Liczba osób") + 
+   labs(fill = "Płeć") +
+   ggtitle("Zakup roweru w zależności od typu zawodu z podziałem na płeć") +
+   scale_fill_manual(values = c("Female" = "lightpink", "Male" = "lightblue")) +
+   theme_gray()
+ 
+ install.packages("plotly", dependencies = TRUE)
+ library(plotly)
+ ggplotly(wykres_2)
+ 
+  ggsave("figs/zawod_a_zakup_roweru.png",
+  width = 12,
+  height = 10,
+  scale = 0.5,
+  dpi = 1200)
 
 ```
-
