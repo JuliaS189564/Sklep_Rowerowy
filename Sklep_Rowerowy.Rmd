@@ -184,13 +184,6 @@ library(plotly)
 
 ggplotly(wykres_1)
  
- ggsave("figs/odleglosc_od_pracy.png",
-  width = 12,
-  height = 10,
-  scale = 0.5,
-  dpi = 1200)
- 
- 
  
 ```
 
@@ -214,10 +207,40 @@ zbior$purchased_bike <- factor(zbior$purchased_bike, levels = c("Yes", "No"))
  library(plotly)
  ggplotly(wykres_2)
  
-  ggsave("figs/zawod_a_zakup_roweru.png",
-  width = 12,
-  height = 10,
-  scale = 0.5,
-  dpi = 1200)
 
 ```
+
+```{r}
+#Utworzenie wykresu kołowego
+zakup <- sum(zbior$purchased_bike == "Yes" &zbior $gender == "Female")
+zakup
+zakup_2 <- sum(zbior$purchased_bike == "Yes" & zbior$gender == "Male")
+zakup_2
+zakup_3 <- sum(zbior$purchased_bike == "Yes")
+zakup_3
+procent_kobiet <- (zakup/zakup_3) * 100
+procent_kobiet
+procent_mezczyzn <- (zakup_2/zakup_3) * 100
+procent_mezczyzn
+library(ggplot2)
+dane_wykres_2 <- data.frame(
+  Gender = c("Female", "Male"),
+  numbers = c(50.10, 49.9)
+)
+  
+wykres_3 <- ggplot(dane_wykres_2, aes (x="", y=numbers, fill=Gender)) +
+  geom_bar(stat="identity", width = 1) +
+  coord_polar("y", start = 0 ) +
+   geom_text(aes(label = paste0(numbers, "%")), position = position_stack(vjust = 0.5)) +
+  scale_fill_manual(values = c("Female" = "pink", "Male" = "lightblue")) +
+  ggtitle("Zakup roweru w podziale na płeć") + 
+  theme_light() +
+  theme(
+  plot.title = element_text(hjust = 0.5),
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank()
+  )
+wykres_3
+
+```
+
