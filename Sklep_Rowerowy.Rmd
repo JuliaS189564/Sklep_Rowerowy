@@ -244,3 +244,59 @@ wykres_3
 
 ```
 
+
+```{r}
+#Utworzenie histogramu - zależność między wiekiem, a zakupem roweru
+library(ggplot2)
+library(dplyr)
+
+wykres_4 <- ggplot(zbior, aes(age)) +
+  geom_histogram(binwidth = 5, fill = "red", color = "black") +
+  labs(title = "Zakup raweru w zależności do wieku", x = "Wiek", y = "Zakup roweru") +
+  theme_minimal()
+
+wykres_4
+
+##Utworzenie wykresu słupkowego - zależność między regionem, a zakupem roweru
+library(ggplot2)
+library(dplyr)
+
+wykres_5 <- ggplot(zbior, aes(region)) +
+  geom_bar(fill = "pink", color = "lightgreen") +
+  labs(title = "Zakup raweru w zależności do regionu zamieszkania", x = "Region", y = "Zakup roweru") +
+  theme_minimal()
+
+wykres_5
+
+```
+
+
+```{r}
+#Utworzenie boxplota - zakup roweru względem zarobków
+library(ggplot2)
+library(dplyr)
+
+wykres_6 <- ggplot(zbior, aes(x = purchased_bike, y = income)) +
+    geom_boxplot(fill = "lightblue", color = "darkblue") +
+  labs(title = "Zakup roweru z zleżności od zarobków", 
+       x = "Zakup roweru", 
+       y = "Zarobki") +
+  theme_minimal()
+
+wykres_6
+
+#Utworzenie boxplota - zakup roweru względem zarobków z odstającymi wartościami
+
+wykres_7 <- ggplot(zbior, aes(x = purchased_bike, y = income)) +
+    geom_boxplot(outlier.color = "red", outlier.shape = 8) +
+  labs(title = "Zakup roweru z zleżności od zarobków z odstającymi wartościami", 
+       x = "Zakup roweru", 
+       y = "Zarobki") +
+  theme_minimal()
+
+wykres_7
+
+```
+
+
+
