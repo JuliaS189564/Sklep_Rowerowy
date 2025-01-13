@@ -6,7 +6,8 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+library(knitr)
 ```
 
 ```{r load_data}
@@ -156,14 +157,14 @@ if (sum(violations) == 0) {
 }
 ```
 
-```{r}
+```{r echo=FALSE}
 #Czyszczenie nazw zmiennych
 install.packages("janitor")
 library(janitor)
 zbior <- janitor::clean_names(data_withoutNA)
 ```
-
-```{r}
+## Wykresy
+```{r echo=FALSE}
 #Utworzenie wykresu kolumnowego zależności między odległością od pracy, a zakupem roweru
 library(ggplot2)
 library(dplyr)
@@ -186,8 +187,10 @@ ggplotly(wykres_1)
  
  
 ```
+Wykres przedstawia zależność pomiędzy odległością od miejsca pracy a decyzją o zakupie roweru. Na osi poziomej (X) przedstawiono odległości od miejsca pracy w milach, a na osi pionowej (Y) liczba osób, które zdecydowały się na zakup roweru. 
+Najwięcej osób, które zakupiło rower, mieszkało w odległości 0-1 mil od pracy. Liczba zakupu rowerów spada w grupie osób mieszkających 1-2 mile od pracy, podobna wartość zauważalna jest dla osób mieszkających w odległości 5-10 mil od pracy. Natomiast osoby mieszkające w przedziale 2-5 mil częściej decydowały się na zakup roweru w porównaniu do dwóch poprzednio omawianych przedziałów odległości. Osoby mieszkające ponad 10 mil od miejsca pracy najrzadziej decydowały się na zakup roweru. Należy zatem skupić się na klientach, którzy pokonują krótkie odległości do pracy. Jednakże nie warto jest się zamykać tylko i wyłącznie na tą grupę i warto wprowadzić dostosowane akcje marketingowe, które miałyby na celu uświadamianie o udogodnieniach wynikających z korzystania z rowerów na średnie dystanse dojazdu do pracy w celu zwiększenia sprzedaży. 
 
-```{r}
+```{r echo=FALSE}
 #Utworzenie wykresu zależności między płcią, typem zawodu, a zakupem roweru
 library(ggplot2)
 library(dplyr)
@@ -209,8 +212,12 @@ zbior$purchased_bike <- factor(zbior$purchased_bike, levels = c("Yes", "No"))
  
 
 ```
+Wykres przedstawia liczbę zakupów rowerów w podziale na typ zawodu oraz płeć klientów. Na osi poziomej (X) znajduje się typ zawodu (Clerical, Management, Manual, Professional, Skilled Manual), a na osi pionowej (Y) liczba osób, które kupiły rower. Słupki w kolorze różowym reprezentują kobiety, a niebieskim – mężczyzn. 
+Największa liczba zakupów rowerów pochodzi od osób pracujących w zawodach z kategorii "professional" (zarówno wśród kobiet, jak i mężczyzn), przy czym mężczyźni dominują liczbowo. 
+Druga największa grupa to osoby pracujące w zawodach manualnych z wysokimi kwalifikacjami, przy stosunkowo równomiernym podziale między kobiety a mężczyzn. Zakupy w tych grupach zawodowych są wyraźnie niższe niż w grupach "Professional" i "Skilled Manual". W zawodach clerical (biurowych) zauważalna jest niewielka przewaga kobiet.
+W grupie osób zatrudnionych w typie "management" obserwuje się nnajmniejszą liczbę zakupów rowerów wśród kobiet i mężczyzn, może to wynikać z tego, że osoby na wyższym stanowisku wolą przemieszczać się samochodami.
 
-```{r}
+```{r echo=FALSE}
 #Utworzenie wykresu kołowego
 zakup <- sum(zbior$purchased_bike == "Yes" &zbior $gender == "Female")
 zakup
