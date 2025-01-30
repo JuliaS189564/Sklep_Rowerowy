@@ -1,26 +1,28 @@
 ---
-title: "Sklep_Rowerowy"
+title: "Sklep Rowerowy"
 author: "Julia Sulka, Julia Urban, Barbara Michalska"
 date: "2024-11-23"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    theme: paper
+theme: paper
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 options(repos = c(CRAN = "https://cloud.r-project.org/"))
-library(knitr)
-```
-
-```{r load_data}
 library(readr)  # Do wczytywania CSV
 library(naniar) # Do analizy brakujących danych
-
+library(kableExtra)
+library(dplyr)
 # Wczytanie danych
 data <- read_csv("sklep_rowerowy.csv")
 
 # Podgląd danych
 head(data)
-
 ```
+
 
 ## Wstęp
 W ramach niniejszego projektu przeprowadzona zostanie eksploracyjna analiza danych (EDA) dotycząca sklepu rowerowego. Celem analizy jest zrozumienie charakterystyk nabywców rowerów oraz identyfikacja czynników, które mogą wpływać na decyzję o zakupie roweru.
@@ -34,7 +36,7 @@ W ramach projektu zostaną wykonane następujące kroki:
    
 3. _Analizę Opisową_  
    
-4. _Wnioskowanie_ _(testy statystyczne)+_  
+4. _Wnioskowanie_ _(testy statystyczne)_  
    
 5. _Podsumowanie_ _i_ _wnioski_ _końcowe_
 
@@ -66,33 +68,31 @@ W ramach projektu zostaną wykonane następujące kroki:
 
 - _Purchased Bike – zakup roweru (tak/nie) – zmienna wyjściowa_
 
-```{r missing_data}
+```{r load_data, eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+
+# Podgląd danych
+data%>%
+  head(10) %>%  # Wyświetlamy tylko pierwsze 10 wierszy, aby tabela nie była zbyt duża
+  kbl(caption = "Tabela 1: Przykładowe dane klientów sklepu rowerowego") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
+                full_width = FALSE)
+
+```
+
+---
+
+
+## Czyszczenie danych 
+**Czyszczenie danych** to proces usuwania, poprawiania lub imputacji brakujących, błędnych i niezgodnych wartości w zbiorze danych. Jest kluczowe dla zapewnienia jakości analizy, ponieważ błędne lub niepełne dane mogą prowadzić do fałszywych wniosków.
+
+```{r missing_data, eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 # Liczba brakujących wartości w każdej kolumnie
 library(naniar)
 library(ggplot2)
 
-
-n_miss(data)
+brakujące<-n_miss(data)
+  cat("Ilość brakujących wartości:" , brakujące)
   
-# Wizualizacja brakujących danych
-vis_miss(data, sort = TRUE, warn_large_data = FALSE, show_perc = TRUE) +
-  labs(
-    title = "Wizualizacja brakujących danych",
-    subtitle = "Zawiera procent braków w poszczególnych kolumnach"
-  ) +
-  theme_minimal() + # Minimalny motyw dla lepszej czytelności
-  theme(
-    plot.title = element_text(size = 16, face = "bold"),
-    plot.subtitle = element_text(size = 12),
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  ) +
-  scale_fill_manual(
-    values = c("#28B463","#FF5733"), # Kolor dla danych brakujących i obecnych
-    name = "Status danych",          # Tytuł legendy
-    labels = c("Obecne", "Brakujące") # Opis w legendzie
-  )
-
-
 gg_miss_upset(
   data, 
   nsets = 13, 
@@ -100,6 +100,15 @@ gg_miss_upset(
   sets.bar.color = "Violet"       # Kolor pasków dla zestawów
 )
 
+```
+
+## Interpretacja wykresu:
+### Podsumowanie brakujących danych
+- Najwięcej braków występuje w kolumnach `Education`, `Occupation`, `Commute_Distance`, `Region`, `Home_Owner`, `Income`, `Marital_Status`, itp.
+- Niektóre zmienne często występują razem jako brakujące, co sugeruje, że te braki mogą być powiązane (np. jeśli brakuje informacji o dochodzie, może również brakować danych o statusie mieszkaniowym).
+- **Występowanie pojedynczych braków** – kilka zmiennych ma pojedyncze braki, co można łatwo uzupełnić imputacją.
+
+```{r missing_data1, eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 ggplot(data = data, aes(x = Income, y = Age)) +
   geom_point(color = "grey70", size = 3) +      # Punkty dla kompletnych danych
   geom_miss_point(size = 3) +                  # Punkty dla braków
@@ -116,31 +125,113 @@ ggplot(data = data, aes(x = Income, y = Age)) +
     x = "Dochód",
     y = "Wiek"
   )
+```
+
+## Analiza brakujących danych w relacji dochód-wiek
+### Opis wykresu
+
+Wykres przedstawia rozkład danych w relacji między dochodem (oś X) a wiekiem (oś Y), z uwzględnieniem statusu kompletności danych ("Obecne" lub "Brakujące"). Dane zostały podzielone na trzy regiony:
+- **Europa**
+- **Ameryka Północna**
+- **Pacyfik**
+
+Kolor zielony oznacza dane obecne, natomiast kolor pomarańczowy wskazuje na dane brakujące.
+
+### Kluczowe obserwacje
+
+1. **Podział na regiony**:
+   - Dane zostały przedstawione w trzech panelach odpowiadających regionom (Europa, Ameryka Północna, Pacyfik).
+   - Każdy region charakteryzuje się różnym rozkładem punktów, co wskazuje na regionalne różnice w relacji dochód-wiek.
+
+2. **Status danych**:
+   - Dane kompletne (zielony) dominują w całym zbiorze.
+   - Dane brakujące (pomarańczowy) występują sporadycznie, jednak są widoczne w określonych przedziałach wiekowych i dochodowych.
+
+3. **Charakterystyka poszczególnych regionów**:
+   - **Europa**:
+     - Rozkład jest bardziej rozproszony.
+     - Dochody są generalnie niższe niż w pozostałych regionach.
+     - Brakujące dane występują głównie w niższych przedziałach dochodowych.
+   - **Ameryka Północna**:
+     - Dane skoncentrowane w środkowych przedziałach wiekowych (20-60 lat) i dochodowych (50,000-100,000).
+     - Liczba brakujących danych jest minimalna.
+   - **Pacyfik**:
+     - Dane są rozproszone, podobnie jak w Europie.
+     - Braki danych występują w dolnych zakresach dochodów oraz wśród młodszych grup wiekowych.
+
+4. **Rozkład wiekowy i dochodowy**:
+   - Największa liczba obserwacji znajduje się w grupach wiekowych 30-60 lat oraz dochodowych 50,000-100,000.
+   - Brakujące dane są zauważalne w dolnych przedziałach dochodowych i w młodszych grupach wiekowych.
+
+### Wnioski
+
+- Braki danych są niewielkie i raczej nie powinny znacząco wpłynąć na analizę ogólną. Mogą jednak mieć znaczenie w określonych przedziałach (np. niski dochód w Europie i Pacyfiku).
+- Regionalne różnice w rozkładach sugerują konieczność odrębnej analizy dla każdego regionu, aby uwzględnić lokalne specyfiki.
 
 
 
 
-# Tworzenie wykresu z geom_miss_point
-ggplot(data, aes(x = Income, y = Age)) +
-  geom_miss_point() +
+```{r missing_data2, eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+
+gg_miss_fct(data, fct = Gender) +
   labs(
-    title = "Brakujące wartości w danych",
-    subtitle = "Analiza powiązań braków pomiędzy Income i Age",
-    x = "Dochód",
-    y = "Wiek"
+    title = "Brakujące dane w podziale na płeć",
+    x = "Płeć",
+    y = "Liczba brakujących wartości"
   ) +
   theme_minimal()
 
-gg_miss_fct(data, fct = Gender)
+gg_miss_fct(data, fct = Region) +
+  labs(
+    title = "Brakujące dane w podziale na regiony",
+    x = "Region",
+    y = "Liczba brakujących wartości"
+  ) +
+  theme_minimal()
 
-gg_miss_fct(data, fct = Region)
+gg_miss_fct(data, fct = Education) +
+  labs(
+    title = "Brakujące dane w podziale na poziom wykształcenia",
+    x = "Poziom wykształcenia",
+    y = "Liczba brakujących wartości"
+  ) +
+  theme_minimal()
 
-
-gg_miss_fct(data, fct = Education)
 
 ```
+1. Brakujące dane w podziale na poziom wykształcenia
+W pierwszej analizie dane zostały podzielone według poziomu wykształcenia, a następnie przeanalizowano rozkład brakujących wartości w różnych kategoriach. Wyniki wskazują, że:
 
-```{r change_missing_data}
+Najwięcej brakujących wartości odnotowano w zmiennych _Age (Wiek), Children (Dzieci) oraz Cars (Samochody)_.
+Szczególnie wysokie braki dotyczą grupy _Partial High School oraz Graduate Degree_, gdzie niektóre zmienne osiągają poziom braków przekraczający **2,5%** obserwacji.
+Braki w zmiennych takich jak _Income (Dochód) oraz Marital Status (Stan cywilny)_ są bardziej rozproszone, lecz zauważalne w kilku grupach wykształcenia.
+
+
+2.Brakujące dane w podziale na regiony
+W drugiej analizie dane zostały podzielone według regionów _(Europe, North America, Pacific)_. Obserwacje wskazują na następujące wnioski:
+
+Najwięcej braków odnotowano w kategorii _Income (Dochód)_ w regionie Pacific, gdzie poziom braków jest najwyższy **(powyżej 2,5%)**.
+Znaczące luki występują także w kategoriach _Gender (Płeć) oraz Cars (Samochody)_ w Europie, co sugeruje potencjalne błędy w zbieraniu danych w tym regionie.
+
+Braki w pozostałych kategoriach, takich jak _Marital Status (Stan cywilny) czy Commute Distance (Dystans dojazdu)_, są mniej istotne, jednak nadal widoczne w różnych regionach.
+
+3. Brakujące dane w podziale na płeć
+Ostatnia analiza dotyczyła rozkładu braków danych w zależności od płci. Wyniki wskazują, że:
+
+Najwięcej brakujących danych dotyczy osób, dla których nie określono płci (NA). Szczególnie duże luki występują w kategoriach _Age (Wiek), Children (Dzieci) oraz Cars (Samochody)_, gdzie brakujące wartości osiągają poziom powyżej **7,5%**.
+W grupach _Female i Male_ braki danych są znacznie mniejsze, ale widoczne są w zmiennych _Marital Status oraz Income_.
+Możliwe, że brak określenia płci wiąże się z problemami w rejestracji danych lub ich późniejszym przetwarzaniu, co wymaga dalszej weryfikacji.
+
+4. Wnioski i rekomendacje
+Na podstawie powyższej analizy można sformułować następujące wnioski:
+
+Braki danych są szczególnie widoczne w zmiennych związanych z wiekem, dziećmi oraz dochodem, co może wpłynąć na jakość przyszłych analiz i prognoz.
+Warto zwrócić uwagę na grupę osób bez określonej płci (NA), gdyż w tej kategorii braki są znacznie większe niż w pozostałych grupach.
+
+Region Pacific wyróżnia się pod względem brakujących wartości w dochodach, co może wskazywać na trudności w zbieraniu tych danych w tym obszarze.
+W dalszych krokach zaleca się weryfikację źródeł brakujących danych oraz ewentualne zastosowanie metod imputacji, aby poprawić kompletność zbioru danych.
+
+```{r change_missing_data3,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 
 # Wypełnienie braków danych
 
@@ -149,13 +240,14 @@ library(VIM)
 
 data_withoutNA <- hotdeck(data)   # Funkcja hotdeck uzupełnia braki danych
 
-n_miss(data_withoutNA)            # Ponowne sprawdzenie czy w danych są braki
-
+n_miss<-n_miss(data_withoutNA)            # Ponowne sprawdzenie czy w danych są braki 
+if(n_miss == 0){
+cat("W naszym pliku nie ma już braków danych")}
 data_withoutNA <- hotdeck(data, imp_var = FALSE) #Poprawienie funkcji hotdeck
 
 ```
 
-```{r}
+```{r ,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Ustawienie zasad dla poszczególnych zmiennych
 library(editrules)
 library(dplyr)
