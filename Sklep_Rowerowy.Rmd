@@ -22,6 +22,50 @@ head(data)
 
 ```
 
+## Wstęp
+W ramach niniejszego projektu przeprowadzona zostanie eksploracyjna analiza danych (EDA) dotycząca sklepu rowerowego. Celem analizy jest zrozumienie charakterystyk nabywców rowerów oraz identyfikacja czynników, które mogą wpływać na decyzję o zakupie roweru.
+Dostępny zestaw danych obejmuje informacje o 1000 klientach, w tym szczegółowe cechy demograficzne i behawioralne, a także kategoryczną zmienną wyjściową informującą, czy dana osoba dokonała zakupu roweru. Ponieważ dane zawierają brakujące wartości (NA), konieczne będzie ich odpowiednie przetworzenie, co stanowi istotny element procesu analizy danych.
+
+W ramach projektu zostaną wykonane następujące kroki:
+
+1. _Data Cleansing, Wrangling_
+   
+2. _Wizualizację Danych_  
+   
+3. _Analizę Opisową_  
+   
+4. _Wnioskowanie_ _(testy statystyczne)+_  
+   
+5. _Podsumowanie_ _i_ _wnioski_ _końcowe_
+
+
+**Opis zmiennych:**
+- _ID – unikalny identyfikator nabywcy_
+
+- _Marital Status – status cywilny (np. „Married”/„Single”)_
+
+- _Gender – płeć (np. „Male”/„Female”)_
+
+- _Income – dochód_
+
+- _Children – liczba dzieci_
+
+- _Education – poziom wykształcenia (np. „Bachelors”, „Partial High School”)_
+
+- _Occupation – zawód (np. „Clerical”, „Professional”)_
+
+- _Home Owner – posiadanie domu (tak/nie)_
+
+- _Cars – liczba posiadanych samochodów_
+
+- _Commute Distance – odległość do pracy (np. „0-1 Miles”, „5-10 Miles”)_
+
+- _Region – region geograficzny (np. „Europe”, „Pacific”, „North America”)_
+
+- _Age – wiek_
+
+- _Purchased Bike – zakup roweru (tak/nie) – zmienna wyjściowa_
+
 ```{r missing_data}
 # Liczba brakujących wartości w każdej kolumnie
 library(naniar)
