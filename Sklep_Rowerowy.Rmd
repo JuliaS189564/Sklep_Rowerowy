@@ -28,7 +28,7 @@ head(data)
 W ramach niniejszego projektu przeprowadzona zostanie eksploracyjna analiza danych (EDA) dotycząca sklepu rowerowego. Celem analizy jest zrozumienie charakterystyk nabywców rowerów oraz identyfikacja czynników, które mogą wpływać na decyzję o zakupie roweru.
 Dostępny zestaw danych obejmuje informacje o 1000 klientach, w tym szczegółowe cechy demograficzne i behawioralne, a także kategoryczną zmienną wyjściową informującą, czy dana osoba dokonała zakupu roweru. Ponieważ dane zawierają brakujące wartości (NA), konieczne będzie ich odpowiednie przetworzenie, co stanowi istotny element procesu analizy danych.
 
-W ramach projektu zostaną wykonane następujące kroki:
+**W ramach projektu zostaną wykonane następujące kroki:**
 
 1. _Data Cleansing, Wrangling_
    
@@ -42,6 +42,7 @@ W ramach projektu zostaną wykonane następujące kroki:
 
 
 **Opis zmiennych:**
+
 - _ID – unikalny identyfikator nabywcy_
 
 - _Marital Status – status cywilny (np. „Married”/„Single”)_
@@ -127,7 +128,7 @@ ggplot(data = data, aes(x = Income, y = Age)) +
   )
 ```
 
-## Analiza brakujących danych w relacji dochód-wiek
+### Analiza brakujących danych w relacji dochód-wiek
 ### Opis wykresu
 
 Wykres przedstawia rozkład danych w relacji między dochodem (oś X) a wiekiem (oś Y), z uwzględnieniem statusu kompletności danych ("Obecne" lub "Brakujące"). Dane zostały podzielone na trzy regiony:
@@ -199,7 +200,7 @@ gg_miss_fct(data, fct = Education) +
 
 
 ```
-1. Brakujące dane w podziale na poziom wykształcenia
+**1.** Brakujące dane w podziale na poziom wykształcenia
 W pierwszej analizie dane zostały podzielone według poziomu wykształcenia, a następnie przeanalizowano rozkład brakujących wartości w różnych kategoriach. Wyniki wskazują, że:
 
 Najwięcej brakujących wartości odnotowano w zmiennych _Age (Wiek), Children (Dzieci) oraz Cars (Samochody)_.
@@ -207,7 +208,7 @@ Szczególnie wysokie braki dotyczą grupy _Partial High School oraz Graduate Deg
 Braki w zmiennych takich jak _Income (Dochód) oraz Marital Status (Stan cywilny)_ są bardziej rozproszone, lecz zauważalne w kilku grupach wykształcenia.
 
 
-2.Brakujące dane w podziale na regiony
+**2.** Brakujące dane w podziale na regiony
 W drugiej analizie dane zostały podzielone według regionów _(Europe, North America, Pacific)_. Obserwacje wskazują na następujące wnioski:
 
 Najwięcej braków odnotowano w kategorii _Income (Dochód)_ w regionie Pacific, gdzie poziom braków jest najwyższy **(powyżej 2,5%)**.
@@ -215,14 +216,14 @@ Znaczące luki występują także w kategoriach _Gender (Płeć) oraz Cars (Samo
 
 Braki w pozostałych kategoriach, takich jak _Marital Status (Stan cywilny) czy Commute Distance (Dystans dojazdu)_, są mniej istotne, jednak nadal widoczne w różnych regionach.
 
-3. Brakujące dane w podziale na płeć
+**3.** Brakujące dane w podziale na płeć
 Ostatnia analiza dotyczyła rozkładu braków danych w zależności od płci. Wyniki wskazują, że:
 
 Najwięcej brakujących danych dotyczy osób, dla których nie określono płci (NA). Szczególnie duże luki występują w kategoriach _Age (Wiek), Children (Dzieci) oraz Cars (Samochody)_, gdzie brakujące wartości osiągają poziom powyżej **7,5%**.
 W grupach _Female i Male_ braki danych są znacznie mniejsze, ale widoczne są w zmiennych _Marital Status oraz Income_.
 Możliwe, że brak określenia płci wiąże się z problemami w rejestracji danych lub ich późniejszym przetwarzaniu, co wymaga dalszej weryfikacji.
 
-4. Wnioski i rekomendacje
+**4.** Wnioski i rekomendacje
 Na podstawie powyższej analizy można sformułować następujące wnioski:
 
 Braki danych są szczególnie widoczne w zmiennych związanych z wiekem, dziećmi oraz dochodem, co może wpłynąć na jakość przyszłych analiz i prognoz.
@@ -517,7 +518,7 @@ wykres_7
 ```
 
 ## Statystyki Opisowe 
-```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE,fig.height=8, fig.align='center'}
 
 library(dplyr)
 library(knitr)
@@ -541,3 +542,23 @@ kable(summary_stats, caption = "Podstawowe statystyki opisowe dla danych")
 ```
 ## Analiza statystyk opisowych nabywców rowerów
 W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opisowych dotyczących wieku, dochodu, liczby dzieci oraz liczby posiadanych samochodów wśród klientów sklepu rowerowego.
+
+### Interpretacja wyników
+Wiek klientów: Średni wiek kupujących rowery wynosi około **44 lata**, natomiast mediana wieku to 43 lata, co oznacza, że połowa klientów ma mniej niż **43 lata**, a połowa więcej. To potwierdza wcześniejsze wnioski, że głównymi nabywcami rowerów są osoby w przedziale **30-50 lat**.
+
+Dochód: Średni dochód klientów to **56 267,61**, a mediana dochodu wynosi 60 000. Mediana jest nieco wyższa od średniej, co sugeruje, że wśród klientów znajduje się pewna liczba osób o niższych dochodach, które obniżają średnią wartość.
+
+Liczba dzieci: Średnia liczba dzieci wynosi 1,91, a mediana to 2, co sugeruje, że większość klientów to osoby posiadające jedno lub dwoje dzieci. Może to mieć wpływ na preferencje dotyczące wyboru roweru, np. większe zainteresowanie rowerami rodzinnymi czy dziecięcymi.
+
+Liczba posiadanych samochodów: Klienci posiadają średnio **1,46** samochodu, a mediana to 1, co oznacza, że większość klientów posiada przynajmniej jedno auto. Warto zastanowić się nad strategiami promocyjnymi skierowanymi do osób, które mogą traktować rower jako alternatywny środek transportu.
+
+### Wnioski
+Dane potwierdzają, że główną grupę nabywców rowerów stanowią osoby w wieku **30-50 lat**, co powinno być brane pod uwagę w strategiach marketingowych.
+Dochód klientów jest na umiarkowanym poziomie, co oznacza, że w ofercie warto uwzględnić zarówno modele premium, jak i bardziej budżetowe rowery.
+Znaczna część klientów to osoby posiadające dzieci, co sugeruje potencjał w rozwijaniu segmentu rowerów rodzinnych.
+Wielu klientów posiada samochody, co może wskazywać na potrzebę promowania rowerów jako alternatywnego środka transportu.
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.align='center'}
+cor.test(data$Age, data$Income, method = "pearson")
+
+
+```
