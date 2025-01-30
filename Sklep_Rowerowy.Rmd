@@ -247,7 +247,7 @@ data_withoutNA <- hotdeck(data, imp_var = FALSE) #Poprawienie funkcji hotdeck
 
 ```
 
-####  Reguły walidacyjne dla danych
+#### Reguły walidacyjne dla danych
 
 ```{r,  echo = FALSE}
 library(kableExtra)
@@ -604,6 +604,43 @@ kable(summary_stats, caption = "Podstawowe statystyki opisowe dla danych")
 ## Analiza statystyk opisowych nabywców rowerów
 
 W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opisowych dotyczących wieku, dochodu, liczby dzieci oraz liczby posiadanych samochodów wśród klientów sklepu rowerowego.
+
+## Testy statystyczne
+
+### Test Shapiro-Wilka
+
+**Hipoteza zerowa**: Dane posiadają rozkład normalny.
+
+**Hipoteza alternatywna**: Dane nie posiadają rozkładu normalnego.
+
+Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
+Dane nie posiadają rozkładu normalnego.
+
+```{r,eval=TRUE, echo = FALSE}
+test_shapiro_wilka <- function(baza, zbior) {
+  wyniki <- data.frame(Zmienna = character(),
+                       Wartosc_p = numeric(),
+                       Test_Wynik = character(),
+                       stringsAsFactors = FALSE)
+  
+  for (zmienna in names(zbior)[-c(1:3)]) { 
+    if (is.numeric(zbior[[zmienna]])) { 
+      wynik_testu <- shapiro.test(zbior[[zmienna]]) 
+      
+      nowy_wiersz <- data.frame(Zmienna = zmienna,
+                                Wartosc_p = wynik_testu$p.value,
+                                Test_Wynik = ifelse(wynik_testu$p.value < 0.05, "Odrzucamy", "Nie odrzucamy"),
+                                stringsAsFactors = FALSE)
+wyniki <- rbind(wyniki, nowy_wiersz)
+}
+}
+  
+  return(wyniki)
+}
+
+wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
+print(wyniki_testu)
+```
 
 ### Interpretacja wyników
 
