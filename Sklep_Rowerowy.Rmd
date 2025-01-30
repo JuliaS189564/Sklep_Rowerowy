@@ -489,7 +489,7 @@ Drugi wykres przedstawia liczbę zakupów rowerów w trzech regionach: **Europa,
 ### **4. Podsumowanie**  
 Przeprowadzona analiza pokazuje, że głównymi nabywcami rowerów są osoby w wieku **30-50 lat** oraz mieszkańcy **Ameryki Północnej**. Dla firm zajmujących się sprzedażą rowerów kluczowe będzie dostosowanie działań marketingowych do tych grup docelowych. Jednocześnie istnieje potencjał do zwiększenia sprzedaży wśród młodszych konsumentów oraz na rynkach europejskim i pacyficznym.
 
-```{r}
+```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Utworzenie boxplota - zakup roweru względem zarobków
 library(ggplot2)
 library(dplyr)
