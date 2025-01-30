@@ -497,25 +497,28 @@ library(dplyr)
 
 wykres_6 <- ggplot(zbior, aes(x = purchased_bike, y = income)) +
     geom_boxplot(fill = "lightblue", color = "darkblue") +
-  labs(title = "Zakup roweru z zleżności od zarobków", 
+  labs(title = "Zakup roweru z zleżności od zarobków z odstającymi wartościami", 
        x = "Zakup roweru", 
        y = "Zarobki") +
   theme_minimal()
 
 wykres_6
 
-#Utworzenie boxplota - zakup roweru względem zarobków z odstającymi wartościami
-
-wykres_7 <- ggplot(zbior, aes(x = purchased_bike, y = income)) +
-    geom_boxplot(outlier.color = "red", outlier.shape = 8) +
-  labs(title = "Zakup roweru z zleżności od zarobków z odstającymi wartościami", 
-       x = "Zakup roweru", 
-       y = "Zarobki") +
-  theme_minimal()
-
-wykres_7
-
 ```
+
+## 5. Aaliza zakupu rowerów w zależności od zarobków z odstającymi wartościami** 
+
+#### **5.1. Wykres i interpretacja danych**  
+
+Powyższy wykres przedstawia rozkład zarobków w dwóch grupach: osób, które zdecydowały się na zakup roweru ("Yes"), oraz tych, które roweru nie kupiły ("No"). Wykres skrzynkowy umożliwia ocenę mediany, kwartylów, a także identyfikację wartości odstających w obu grupach.
+- Mediany zarobków w obu grupach są zbliżone, co wskazuje na brak istotnych różnic w przeciętnych zarobkach między osobami, które kupiły rower, a tymi, które tego nie zrobiły.
+- Rozpiętość zarobków, reprezentowana przez wąsy skrzynki, również jest podobna dla obu grup, co sugeruje, że poziom zarobków nie jest głównym czynnikiem wpływającym na decyzję o zakupie roweru.
+- W obu grupach zaobserwowano wartości odstające, które wskazują na obecność osób o skrajnie wysokich zarobkach. Wartości te nie wpływają jednak na główny trend wykresu.
+
+#### **5.2. Wnioski i rekomendacje**
+
+Analiza wykresu nie wskazuje na wyraźną zależność między poziomem zarobków a decyzją o zakupie roweru. Z racji braku wyraźnej korelacji z zarobkami, lepiej byłby zająć się prowadzeniem kampanii marketingowych skierowanych do szerokiego spektrum klientów, nie ograniczając ich do osób o określonym poziomie dochodów.
+
 
 ## Statystyki Opisowe 
 ```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE,fig.height=8, fig.align='center'}
