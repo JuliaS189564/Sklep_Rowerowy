@@ -516,5 +516,28 @@ wykres_7
 
 ```
 
+## Statystyki Opisowe 
+```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 
+library(dplyr)
+library(knitr)
 
+# Podstawowe statystyki opisowe
+summary_stats <- data %>%
+  summarise(
+    Średni_wiek = mean(Age, na.rm = TRUE),
+    Mediana_wiek = median(Age, na.rm = TRUE),
+    Średni_dochód = mean(Income, na.rm = TRUE),
+    Mediana_dochód = median(Income, na.rm = TRUE),
+    Średnia_liczba_dzieci = mean(Children, na.rm = TRUE),
+    Mediana_liczba_dzieci = median(Children, na.rm = TRUE),
+    Średnia_liczba_samochodów = mean(Cars, na.rm = TRUE),
+    Mediana_liczba_samochodów = median(Cars, na.rm = TRUE)
+  )
+
+# Wyświetlenie tabeli
+kable(summary_stats, caption = "Podstawowe statystyki opisowe dla danych")
+
+```
+## Analiza statystyk opisowych nabywców rowerów
+W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opisowych dotyczących wieku, dochodu, liczby dzieci oraz liczby posiadanych samochodów wśród klientów sklepu rowerowego.
