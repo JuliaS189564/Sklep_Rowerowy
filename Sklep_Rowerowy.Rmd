@@ -427,9 +427,10 @@ wykres_3 <- ggplot(dane_wykres_2, aes (x="", y=numbers, fill=Gender)) +
 wykres_3
 
 ```
+###Wnioski
+Analiza wskazuje, że nie ma znaczącej różnicy w zainteresowaniu zakupem rowerów między kobietami a mężczyznami. Obydwie grupy dokonują zakupu w niemal równych proporcjach. Można z tego wywnioskować, że strategie marketingowe powinny być kierowane w sposób równomierny do obu płci, bez konieczności istotnej personalizacji ze względu na różnice w zainteresowaniu.
 
-
-```{r}
+```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Utworzenie histogramu - zależność między wiekiem, a zakupem roweru
 library(ggplot2)
 library(dplyr)
@@ -454,6 +455,39 @@ wykres_5
 
 ```
 
+### **2. Analiza zakupu rowerów w zależności od wieku**  
+
+#### **2.1. Wykres i interpretacja danych**  
+Załączony wykres przedstawia liczbę zakupów rowerów w różnych grupach wiekowych. Najważniejsze obserwacje to:  
+- Najwięcej zakupów dokonują osoby w przedziale wiekowym **30-50 lat**, z wyraźnym szczytem w okolicach 40. roku życia.  
+- Po 50. roku życia zainteresowanie zakupem rowerów stopniowo maleje.  
+- Osoby młodsze, poniżej 30. roku życia, kupują rowery w mniejszym stopniu niż grupy średniowieku.  
+- Po 70. roku życia liczba zakupów jest marginalna.  
+
+#### **2.2. Wnioski i rekomendacje**  
+- Segment klientów w wieku **30-50 lat** powinien być główną grupą docelową w kampaniach marketingowych.  
+- Warto rozważyć działania promocyjne skierowane do młodszych konsumentów (20-30 lat), np. oferty dla studentów czy kampanie podkreślające korzyści zdrowotne i ekologiczne rowerów.  
+- Możliwe jest również wprowadzenie specjalnych modeli dostosowanych do potrzeb osób starszych (np. rowery elektryczne).  
+
+---
+
+### **3. Analiza zakupu rowerów w zależności od regionu zamieszkania**  
+
+#### **3.1. Wykres i interpretacja danych**  
+Drugi wykres przedstawia liczbę zakupów rowerów w trzech regionach: **Europa, Ameryka Północna i Pacyfik**. Główne obserwacje:  
+- Najwięcej zakupów dokonano w **Ameryce Północnej**, gdzie liczba ta przekracza 500.  
+- Europa znajduje się na drugim miejscu, z wynikiem około **300 zakupów**.  
+- Region Pacyfiku wykazuje najniższą liczbę zakupów, wynoszącą około **200**.  
+
+#### **3.2. Wnioski i rekomendacje**  
+- Ameryka Północna stanowi kluczowy rynek dla sprzedaży rowerów, dlatego warto skupić na nim główne działania marketingowe.  
+- Europa również stanowi istotny rynek, jednak można wprowadzić dodatkowe strategie zwiększające sprzedaż, np. promocje lub rozwój sieci dystrybucyjnej.  
+- Region Pacyfiku wykazuje niższe zainteresowanie rowerami, co może wynikać z mniejszej infrastruktury rowerowej lub preferencji transportowych. Warto przeanalizować czynniki wpływające na niższą sprzedaż i dostosować ofertę do lokalnych potrzeb.  
+
+---
+
+### **4. Podsumowanie**  
+Przeprowadzona analiza pokazuje, że głównymi nabywcami rowerów są osoby w wieku **30-50 lat** oraz mieszkańcy **Ameryki Północnej**. Dla firm zajmujących się sprzedażą rowerów kluczowe będzie dostosowanie działań marketingowych do tych grup docelowych. Jednocześnie istnieje potencjał do zwiększenia sprzedaży wśród młodszych konsumentów oraz na rynkach europejskim i pacyficznym.
 
 ```{r}
 #Utworzenie boxplota - zakup roweru względem zarobków
