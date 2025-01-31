@@ -108,7 +108,7 @@ gg_miss_upset(
 
 ```
 
-## Interpretacja wykresu:
+**Interpretacja wykresu:**
 
 ### Podsumowanie brakujących danych
 
@@ -137,14 +137,14 @@ ggplot(data = data, aes(x = Income, y = Age)) +
 
 ### Analiza brakujących danych w relacji dochód-wiek
 
-### Opis wykresu
+**Opis wykresu**
 
 Wykres przedstawia rozkład danych w relacji między dochodem (oś X) a wiekiem (oś Y), z uwzględnieniem statusu kompletności danych ("Obecne" lub "Brakujące").
 Dane zostały podzielone na trzy regiony: - **Europa** - **Ameryka Północna** - **Pacyfik**
 
 Kolor zielony oznacza dane obecne, natomiast kolor pomarańczowy wskazuje na dane brakujące.
 
-### Kluczowe obserwacje
+**Kluczowe obserwacje**
 
 1.  **Podział na regiony**:
     -   Dane zostały przedstawione w trzech panelach odpowiadających regionom (Europa, Ameryka Północna, Pacyfik).
@@ -167,7 +167,7 @@ Kolor zielony oznacza dane obecne, natomiast kolor pomarańczowy wskazuje na dan
     -   Największa liczba obserwacji znajduje się w grupach wiekowych 30-60 lat oraz dochodowych 50,000-100,000.
     -   Brakujące dane są zauważalne w dolnych przedziałach dochodowych i w młodszych grupach wiekowych.
 
-### Wnioski
+**Wnioski**
 
 -   Braki danych są niewielkie i raczej nie powinny znacząco wpłynąć na analizę ogólną. Mogą jednak mieć znaczenie w określonych przedziałach (np. niski dochód w Europie i Pacyfiku).
 -   Regionalne różnice w rozkładach sugerują konieczność odrębnej analizy dla każdego regionu, aby uwzględnić lokalne specyfiki.
@@ -231,6 +231,8 @@ Warto zwrócić uwagę na grupę osób bez określonej płci (NA), gdyż w tej k
 Region Pacific wyróżnia się pod względem brakujących wartości w dochodach, co może wskazywać na trudności w zbieraniu tych danych w tym obszarze.
 W dalszych krokach zaleca się weryfikację źródeł brakujących danych oraz ewentualne zastosowanie metod imputacji, aby poprawić kompletność zbioru danych.
 
+### Wypełnienie braków danych
+
 ```{r change_missing_data3,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 
 # Wypełnienie braków danych
@@ -247,7 +249,7 @@ data_withoutNA <- hotdeck(data, imp_var = FALSE) #Poprawienie funkcji hotdeck
 
 ```
 
-#### Reguły walidacyjne dla danych
+### Reguły walidacyjne dla danych
 
 ```{r,  echo = FALSE}
 library(kableExtra)
@@ -342,7 +344,9 @@ library(janitor)
 zbior <- janitor::clean_names(data_withoutNA)
 ```
 
-## Wykresy
+## Wizualizacja
+
+### Analiza odłegość od pracy, a zakup roweru
 
 ```{r echo=FALSE,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Utworzenie wykresu kolumnowego zależności między odległością od pracy, a zakupem roweru
@@ -368,11 +372,11 @@ ggplotly(wykres_1)
  
 ```
 
-### Opis wykresu
+**Interpretacja wyników**
 
 Wykres ilustruje zależność pomiędzy odległością od miejsca pracy (oś X, przedstawiona w milach) a liczbą osób, które zdecydowały się na zakup roweru (oś Y).
 
-### Kluczowe obserwacje
+**Kluczowe obserwacje**
 
 1.  **Najczęstsze zakupy rowerów**:
     -   Najwięcej osób, które zakupiło rower, mieszkało w odległości **0-1 mili** od miejsca pracy.
@@ -383,10 +387,12 @@ Wykres ilustruje zależność pomiędzy odległością od miejsca pracy (oś X, 
 3.  **Najrzadsze zakupy rowerów**:
     -   Osoby mieszkające w odległości powyżej **10 mil** od miejsca pracy najrzadziej decydują się na zakup roweru.
 
-### Wnioski
+**Wnioski**
 
 -   Największy potencjał sprzedaży rowerów istnieje wśród osób pokonujących krótkie odległości do pracy (0-1 mila).
 -   Osoby mieszkające 2-5 mil od pracy stanowią interesującą grupę, w której liczba zakupów jest wyższa niż w innych grupach średnich odległości.
+
+### Analiza zakupu roweru w zależności od typu zawodu z podziałem na płeć 
 
 ```{r echo=FALSE,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Utworzenie wykresu zależności między płcią, typem zawodu, a zakupem roweru
@@ -411,7 +417,7 @@ zbior$purchased_bike <- factor(zbior$purchased_bike, levels = c("Yes", "No"))
 
 ```
 
-### Opis wykresu
+**Interpretacja wyników**
 
 Wykres przedstawia liczbę zakupów rowerów w podziale na typ zawodu (oś X) oraz płeć klientów.
 Na osi poziomej (X) uwzględniono kategorie zawodów: **Clerical**, **Management**, **Manual**, **Professional**, **Skilled Manual**.
@@ -419,7 +425,7 @@ Oś pionowa (Y) reprezentuje liczbę osób, które zakupiły rower.\
 - **Różowe słupki**: reprezentują kobiety.\
 - **Niebieskie słupki**: reprezentują mężczyzn.
 
-### Kluczowe obserwacje
+**Kluczowe obserwacje**
 
 1.  **Największa liczba zakupów**:
     -   Najwięcej rowerów zakupiono w grupie zawodów **Professional**, zarówno wśród kobiet, jak i mężczyzn.
@@ -434,7 +440,7 @@ Oś pionowa (Y) reprezentuje liczbę osób, które zakupiły rower.\
     -   W tej kategorii liczba zakupów jest najniższa dla obu płci.
     -   Może to wynikać z preferencji osób na wyższych stanowiskach do korzystania z samochodów jako środka transportu.
 
-### Wnioski
+**Wnioski**
 
 -   Zawody z kategorii **Professional** oraz **Skilled Manual** stanowią kluczowe grupy klientów pod względem zakupu rowerów.
 -   Niska liczba zakupów w grupie **Management** może wskazywać na ograniczone zainteresowanie rowerami wśród osób o wyższych dochodach, które preferują inne środki transportu.
@@ -468,9 +474,13 @@ wykres_3
 
 ```
 
-###Wnioski Analiza wskazuje, że nie ma znaczącej różnicy w zainteresowaniu zakupem rowerów między kobietami a mężczyznami.
+**Wnioski**
+
+Analiza wskazuje, że nie ma znaczącej różnicy w zainteresowaniu zakupem rowerów między kobietami a mężczyznami.
 Obydwie grupy dokonują zakupu w niemal równych proporcjach.
 Można z tego wywnioskować, że strategie marketingowe powinny być kierowane w sposób równomierny do obu płci, bez konieczności istotnej personalizacji ze względu na różnice w zainteresowaniu.
+
+### Analiza zakupu rowerów w zależności od wieku
 
 ```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Utworzenie histogramu - zależność między wiekiem, a zakupem roweru
@@ -478,28 +488,15 @@ library(ggplot2)
 library(dplyr)
 
 wykres_4 <- ggplot(zbior, aes(age)) +
-  geom_histogram(binwidth = 5, fill = "red", color = "black") +
+  geom_histogram(binwidth = 5, fill = "lightgreen", color = "black") +
   labs(title = "Zakup raweru w zależności do wieku", x = "Wiek", y = "Zakup roweru") +
   theme_minimal()
 
 wykres_4
 
-##Utworzenie wykresu słupkowego - zależność między regionem, a zakupem roweru
-library(ggplot2)
-library(dplyr)
-
-wykres_5 <- ggplot(zbior, aes(region)) +
-  geom_bar(fill = "pink", color = "lightgreen") +
-  labs(title = "Zakup raweru w zależności do regionu zamieszkania", x = "Region", y = "Zakup roweru") +
-  theme_minimal()
-
-wykres_5
-
 ```
 
-### **2. Analiza zakupu rowerów w zależności od wieku**
-
-#### **2.1. Wykres i interpretacja danych**
+**Interpretacja wyników**
 
 Załączony wykres przedstawia liczbę zakupów rowerów w różnych grupach wiekowych.
 Najważniejsze obserwacje to:\
@@ -512,17 +509,29 @@ roku życia, kupują rowery w mniejszym stopniu niż grupy średniowieku.\
 - Po 70.
 roku życia liczba zakupów jest marginalna.
 
-#### **2.2. Wnioski i rekomendacje**
+**Wnioski i rekomendacje**
 
 -   Segment klientów w wieku **30-50 lat** powinien być główną grupą docelową w kampaniach marketingowych.\
 -   Warto rozważyć działania promocyjne skierowane do młodszych konsumentów (20-30 lat), np. oferty dla studentów czy kampanie podkreślające korzyści zdrowotne i ekologiczne rowerów.\
 -   Możliwe jest również wprowadzenie specjalnych modeli dostosowanych do potrzeb osób starszych (np. rowery elektryczne).
 
-------------------------------------------------------------------------
+### Analiza zakupu rowerów w zależności od regionu zamieszkania
 
-### **3. Analiza zakupu rowerów w zależności od regionu zamieszkania**
+```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+##Utworzenie wykresu słupkowego - zależność między regionem, a zakupem roweru
+library(ggplot2)
+library(dplyr)
 
-#### **3.1. Wykres i interpretacja danych**
+wykres_5 <- ggplot(zbior, aes(region)) +
+  geom_bar(fill = "grey", color = "black") +
+  labs(title = "Zakup raweru w zależności do regionu zamieszkania", x = "Region", y = "Zakup roweru") +
+  theme_minimal()
+
+wykres_5
+
+```
+
+**Interpretacja wyników**
 
 Drugi wykres przedstawia liczbę zakupów rowerów w trzech regionach: **Europa, Ameryka Północna i Pacyfik**.
 Główne obserwacje:\
@@ -530,7 +539,7 @@ Główne obserwacje:\
 - Europa znajduje się na drugim miejscu, z wynikiem około **300 zakupów**.\
 - Region Pacyfiku wykazuje najniższą liczbę zakupów, wynoszącą około **200**.
 
-#### **3.2. Wnioski i rekomendacje**
+**Wnioski i rekomendacje**
 
 -   Ameryka Północna stanowi kluczowy rynek dla sprzedaży rowerów, dlatego warto skupić na nim główne działania marketingowe.\
 -   Europa również stanowi istotny rynek, jednak można wprowadzić dodatkowe strategie zwiększające sprzedaż, np. promocje lub rozwój sieci dystrybucyjnej.\
@@ -538,11 +547,13 @@ Główne obserwacje:\
 
 ------------------------------------------------------------------------
 
-### **4. Podsumowanie**
+**Podsumowanie**
 
 Przeprowadzona analiza pokazuje, że głównymi nabywcami rowerów są osoby w wieku **30-50 lat** oraz mieszkańcy **Ameryki Północnej**.
 Dla firm zajmujących się sprzedażą rowerów kluczowe będzie dostosowanie działań marketingowych do tych grup docelowych.
 Jednocześnie istnieje potencjał do zwiększenia sprzedaży wśród młodszych konsumentów oraz na rynkach europejskim i pacyficznym.
+
+### Analiza zakupu rowerów w zależności od zarobków z odstającymi wartościami
 
 ```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Utworzenie boxplota - zakup roweru względem zarobków
@@ -560,9 +571,7 @@ wykres_6
 
 ```
 
-## 5. Aaliza zakupu rowerów w zależności od zarobków z odstającymi wartościami
-
-#### **5.1. Wykres i interpretacja danych**
+**Interpretacja wyników**
 
 Powyższy wykres przedstawia rozkład zarobków w dwóch grupach: osób, które zdecydowały się na zakup roweru ("Yes"), oraz tych, które roweru nie kupiły ("No").
 Wykres skrzynkowy umożliwia ocenę mediany, kwartylów, a także identyfikację wartości odstających w obu grupach.
@@ -571,14 +580,14 @@ Wykres skrzynkowy umożliwia ocenę mediany, kwartylów, a także identyfikację
 - W obu grupach zaobserwowano wartości odstające, które wskazują na obecność osób o skrajnie wysokich zarobkach.
 Wartości te nie wpływają jednak na główny trend wykresu.
 
-#### **5.2. Wnioski i rekomendacje**
+**Wnioski i rekomendacje**
 
 Analiza wykresu nie wskazuje na wyraźną zależność między poziomem zarobków a decyzją o zakupie roweru.
 Z racji braku wyraźnej korelacji z zarobkami, lepiej byłby zająć się prowadzeniem kampanii marketingowych skierowanych do szerokiego spektrum klientów, nie ograniczając ich do osób o określonym poziomie dochodów.
 
 ## Statystyki Opisowe
 
-## Analiza statystyk opisowych nabywców rowerów
+### Analiza statystyk opisowych nabywców rowerów
 
 W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opisowych dotyczących wieku, dochodu, liczby dzieci oraz liczby posiadanych samochodów wśród klientów sklepu rowerowego.
 
@@ -700,7 +709,7 @@ print(his1)
 
 ```
 
-## Interpretacja wyników
+**Interpretacja wyników**
 
 **Histogram dla zmiennej income**
 
@@ -716,7 +725,7 @@ print(his2)
 
 ```
 
-## Interpretacja wyników
+**Interpretacja wyników**
 
 **Histogram dla zmiennej age**
 
@@ -749,7 +758,7 @@ print(his3)
 
 ```
 
-## Interpretacja wyników
+**Interpretacja wyników**
 
 **Histogram dla zmiennej children**
 
@@ -764,7 +773,7 @@ print(his4)
 
 ```
 
-## Interpretacja wyników
+**Interpretacja wyników***
 
 **Histogram dla zmiennej cars**
 
@@ -773,7 +782,7 @@ Rozkład tej zmiennej jest dyskretny i **odbiega od kształtu rozkładu normalne
 Natomiast mediana to 1, co oznacza, że większość klientów posiada przynajmniej jedno auto.
 Warto zastanowić się nad strategiami promocyjnymi skierowanymi do osób, które mogą traktować rower jako alternatywny środek transportu.
 
-### Wnioski
+**Wnioski**
 
 Na podstawie analizy histogramów zmiennych income, children, cars oraz age można stwierdzić, że rozkłady badanych cech w większości **różnią się od rozkładu normalnego**, z wyraźną dyskretnością w przypadku liczby dzieci i samochodów, podczas gdy zmienne income i age są bardziej zbliżone do rozkładów ciągłych, choć wykazują pewne odchylenia w postaci skośności.
 Dane potwierdzają, że główną grupę nabywców rowerów stanowią osoby w wieku **30-50 lat**, co powinno być brane pod uwagę w strategiach marketingowych.
@@ -816,7 +825,7 @@ wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
 print(wyniki_testu)
 ```
 
-## Regresja
+### Regresja
 
 ```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.align='center'}
 cor.test(data$Age, data$Income, method = "pearson")
@@ -851,7 +860,7 @@ Posiadanie samochodu również ma negatywny wpływ na zakup roweru,w związku z 
 Kampania promująca rower jako alternatywny środek transportu dla samochodu podczas np.
 jazdy do pracy, mógłby wpłynać na zwiększenie sprzedaży wśród tej grupy osób.
 
-## Test Kołmogowa-Smirnowa
+### Test Kołmogowa-Smirnowa
 
 **Hipoteza zerowa**: Dane posiadają rozkład normalny.
 
@@ -885,7 +894,7 @@ for (var_name in names(variables)) {
 
 ```
 
-## Intepretacja wyników
+**Intepretacja wyników**
 
 **Wyniki dla zmiennej age** Wartość statystyki D wynosi 0.026729, a p-wartość = 0.4726.
 Ponieważ p-wartość jest większa od poziomu istotności 0.05, brak podstaw do odrzucenia hipotezy zerowej.
@@ -903,7 +912,7 @@ Wynik wskazuje, że rozkład zmiennej children istotnie różni się od rozkład
 Odrzucamy hipotezę zerową na poziomie istotności 0.05.
 Wynik wskazuje, że rozkład zmiennej income istotnie różni się od rozkładu normalnego.
 
-## Wnioski
+**Wnioski**
 
 Spośród analizowanych zmiennych, tylko zmienna age wykazuje zgodność z rozkładem normalnym.
 Pozostałe zmienne (car, children, income) istotnie odbiegają od rozkładu normalnego, co zostało już wcześniej przedstawione w formie histogramów.
