@@ -586,7 +586,6 @@ W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opiso
 library(knitr)
 library(e1071)
 
-# Lista statystyk dla każdej zmiennej
 stats_summary <- sapply(zbior[, c("income", "children", "cars", "age")], function(x) {
   c(
     Średnia = mean(x, na.rm = TRUE),
@@ -603,10 +602,9 @@ stats_summary <- sapply(zbior[, c("income", "children", "cars", "age")], functio
   )
 })
 
-# Konwersja na ramkę danych i dodanie kolumny z nazwami statystyk
 stats_summary <- data.frame(Statystyka = rownames(stats_summary), stats_summary, row.names = NULL)
 
-# Wyświetlenie tabeli
+#tabela, 2 miejsca po przecinku
 kable(stats_summary, digits = 2)
 ```
 
