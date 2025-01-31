@@ -392,7 +392,7 @@ Wykres ilustruje zależność pomiędzy odległością od miejsca pracy (oś X, 
 -   Największy potencjał sprzedaży rowerów istnieje wśród osób pokonujących krótkie odległości do pracy (0-1 mila).
 -   Osoby mieszkające 2-5 mil od pracy stanowią interesującą grupę, w której liczba zakupów jest wyższa niż w innych grupach średnich odległości.
 
-### Analiza zakupu roweru w zależności od typu zawodu z podziałem na płeć 
+### Analiza zakupu roweru w zależności od typu zawodu z podziałem na płeć
 
 ```{r echo=FALSE,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 #Utworzenie wykresu zależności między płcią, typem zawodu, a zakupem roweru
@@ -529,6 +529,9 @@ wykres_5 <- ggplot(zbior, aes(region)) +
 
 wykres_5
 
+```
+
+```{}
 ```
 
 **Interpretacja wyników**
@@ -773,7 +776,7 @@ print(his4)
 
 ```
 
-**Interpretacja wyników***
+**Interpretacja wyników**\*
 
 **Histogram dla zmiennej cars**
 
@@ -828,7 +831,7 @@ print(wyniki_testu)
 ### Regresja
 
 ```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.align='center'}
-cor.test(data$Age, data$Income, method = "pearson")
+xyz1 <-cor.test(data$Age, data$Income, method = "pearson")
 
 
 ```
@@ -860,7 +863,7 @@ Posiadanie samochodu również ma negatywny wpływ na zakup roweru,w związku z 
 Kampania promująca rower jako alternatywny środek transportu dla samochodu podczas np.
 jazdy do pracy, mógłby wpłynać na zwiększenie sprzedaży wśród tej grupy osób.
 
-### Test Kołmogowa-Smirnowa
+### Test Kołmogorowa-Smirnowa
 
 **Hipoteza zerowa**: Dane posiadają rozkład normalny.
 
