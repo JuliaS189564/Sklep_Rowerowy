@@ -607,8 +607,6 @@ W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opiso
 
 ## Testy statystyczne
 
-### Test Shapiro-Wilka
-
 **Hipoteza zerowa**: Dane posiadają rozkład normalny.
 
 **Hipoteza alternatywna**: Dane nie posiadają rozkładu normalnego.
@@ -616,64 +614,6 @@ W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opiso
 Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
 Dane nie posiadają rozkładu normalnego.
 
-```{r,eval=TRUE, echo = FALSE}
-test_shapiro_wilka <- function(baza, zbior) {
-  wyniki <- data.frame(Zmienna = character(),
-                       Wartosc_p = numeric(),
-                       Test_Wynik = character(),
-                       stringsAsFactors = FALSE)
-  
-  for (zmienna in names(zbior)[-c(1:3)]) { 
-    if (is.numeric(zbior[[zmienna]])) { 
-      wynik_testu <- shapiro.test(zbior[[zmienna]]) 
-      
-      nowy_wiersz <- data.frame(Zmienna = zmienna,
-                                Wartosc_p = wynik_testu$p.value,
-                                Test_Wynik = ifelse(wynik_testu$p.value < 0.05, "Odrzucamy", "Nie odrzucamy"),
-                                stringsAsFactors = FALSE)
-wyniki <- rbind(wyniki, nowy_wiersz)
-}
-}
-  
-  return(wyniki)
-}
-
-wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
-print(wyniki_testu)
-```
-
-```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.align='center'}
-cor.test(data$Age, data$Income, method = "pearson")
-
-
-```
-
-```{r,eval=TRUE, echo = FALSE}
-zbior$purchased_bike <- ifelse(zbior$purchased_bike == "Yes", 1, 0)
-```
-
-```{r,eval=TRUE, echo = FALSE}
-regresja <- lm(purchased_bike ~ marital_status + log(income) + children + cars, data = zbior)
-summary(regresja)
-```
-
-Model jest statystycznie istotny, ponieważ wartość p dla F-statystyki wynosi:
-
-```         
-< 2.2e-16
-```
-
-Na tej podstawie możemy stwierdzić, że przynajmniej jedna ze zmiennych w modelu jest istotnie powiązana z decyzją o zakupie roweru.
-
-Jeżeli dochód wzrośnie o 10% to zwiększa się prawdopobieństwo zakupu roweru o 1.35%.
-Przydatne byłoby rozważenie wprowadzenia oferty premium dla osób z większym dochodem.
-
-Co interesujące posiadanie dzieci ma ujemny wpływ na zakup roweru, może to wynikać z innych priorytetów, które mają osoby z dziećmi lub potrzeby większego środka transportu jakim jest samochód, gdy ma się dziecko.
-Dla zwiększenia sprzedaży wśród osób z dziećmi pomocne mogłoby się okazać wprowadzenie oferty z rowerami rodzinnymi.
-
-Posiadanie samochodu również ma negatywny wpływ na zakup roweru,w związku z zwiększeniem liczby samochodów o 1, zmniejsza się prawdopdobieństwo zakupu roweru o 10.63%.
-Kampania promująca rower jako alternatywny środek transportu dla samochodu podczas np.
-jazdy do pracy, mógłby wpłynać na zwiększenie sprzedaży wśród tej grupy osób.
 
 ### Histogramy z funkcją rozkładu normalnego
 
@@ -801,6 +741,127 @@ Dochód klientów jest na umiarkowanym poziomie, co oznacza, że w ofercie warto
 Znaczna część klientów to osoby posiadające dzieci, co sugeruje potencjał w rozwijaniu segmentu rowerów rodzinnych.
 Wielu klientów posiada samochody, co może wskazywać na potrzebę promowania rowerów jako alternatywnego środka transportu.
 
+### Test Shapiro-Wilka
 
+**Hipoteza zerowa**: Dane posiadają rozkład normalny.
+
+**Hipoteza alternatywna**: Dane nie posiadają rozkładu normalnego.
+
+Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
+Dane nie posiadają rozkładu normalnego.
+
+
+```{r,eval=TRUE, echo = FALSE}
+test_shapiro_wilka <- function(baza, zbior) {
+  wyniki <- data.frame(Zmienna = character(),
+                       Wartosc_p = numeric(),
+                       Test_Wynik = character(),
+                       stringsAsFactors = FALSE)
+  
+  for (zmienna in names(zbior)[-c(1:3)]) { 
+    if (is.numeric(zbior[[zmienna]])) { 
+      wynik_testu <- shapiro.test(zbior[[zmienna]]) 
+      
+      nowy_wiersz <- data.frame(Zmienna = zmienna,
+                                Wartosc_p = wynik_testu$p.value,
+                                Test_Wynik = ifelse(wynik_testu$p.value < 0.05, "Odrzucamy", "Nie odrzucamy"),
+                                stringsAsFactors = FALSE)
+wyniki <- rbind(wyniki, nowy_wiersz)
+}
+}
+  
+  return(wyniki)
+}
+
+wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
+print(wyniki_testu)
+```
+
+## Regresja
+
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.align='center'}
+cor.test(data$Age, data$Income, method = "pearson")
+
+
+```
+
+```{r,eval=TRUE, echo = FALSE}
+zbior$purchased_bike <- ifelse(zbior$purchased_bike == "Yes", 1, 0)
+```
+
+```{r,eval=TRUE, echo = FALSE}
+regresja <- lm(purchased_bike ~ marital_status + log(income) + children + cars, data = zbior)
+summary(regresja)
+```
+
+Model jest statystycznie istotny, ponieważ wartość p dla F-statystyki wynosi:
+
+```         
+< 2.2e-16
+```
+
+Na tej podstawie możemy stwierdzić, że przynajmniej jedna ze zmiennych w modelu jest istotnie powiązana z decyzją o zakupie roweru.
+
+Jeżeli dochód wzrośnie o 10% to zwiększa się prawdopobieństwo zakupu roweru o 1.35%.
+Przydatne byłoby rozważenie wprowadzenia oferty premium dla osób z większym dochodem.
+
+Co interesujące posiadanie dzieci ma ujemny wpływ na zakup roweru, może to wynikać z innych priorytetów, które mają osoby z dziećmi lub potrzeby większego środka transportu jakim jest samochód, gdy ma się dziecko.
+Dla zwiększenia sprzedaży wśród osób z dziećmi pomocne mogłoby się okazać wprowadzenie oferty z rowerami rodzinnymi.
+
+Posiadanie samochodu również ma negatywny wpływ na zakup roweru,w związku z zwiększeniem liczby samochodów o 1, zmniejsza się prawdopdobieństwo zakupu roweru o 10.63%.
+Kampania promująca rower jako alternatywny środek transportu dla samochodu podczas np.
+jazdy do pracy, mógłby wpłynać na zwiększenie sprzedaży wśród tej grupy osób.
+
+## Test Kołmogowa-Smirnowa
+
+**Hipoteza zerowa**: Dane posiadają rozkład normalny.
+
+**Hipoteza alternatywna**: Dane nie posiadają rozkładu normalnego.
+
+Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
+Dane nie posiadają rozkładu normalnego.
+
+
+```{r eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+
+perform_ks_test <- function(zbior, variable_name) {
+  
+  standardized_data <- (zbior - mean(zbior)) / sd(zbior)
+  ks_result <- ks.test(standardized_data, "pnorm")
+  
+  cat("Wyniki dla zmiennej:", variable_name, "\n")
+  print(ks_result)
+  cat("\n")
+}
+
+variables <- list(
+  age = dane_histogram$age,
+  car = dane_histogram$car,
+  children = dane_histogram$children,
+  income = dane_histogram$income
+)
+
+for (var_name in names(variables)) {
+  perform_ks_test(variables[[var_name]], var_name)
+}
+
+```
+## Intepretacja wyników
+
+**Wyniki dla zmiennej age**
+Wartość statystyki D wynosi 0.026729, a p-wartość = 0.4726. Ponieważ p-wartość jest większa od poziomu istotności 0.05, brak podstaw do odrzucenia hipotezy zerowej. Oznacza to, że rozkład zmiennej age jest najbardziej zbliżony do rozkładu normalnego.
+
+**Wyniki dla zmiennej car**
+Wartość statystyki D wynosi 0.1563, a p-wartość jest mniejsza niż 2.2e-16. Odrzucamy hipotezę zerową na poziomie istotności 0.05. Wynik wskazuje, że rozkład zmiennej car istotnie różni się od rozkładu normalnego.
+
+**Wyniki dla zmiennej children**
+Wartość statystyki D wynosi 0.18055, a p-wartość jest mniejsza niż 2.2e-16. Odrzucamy hipotezę zerową na poziomie istotności 0.05. Wynik wskazuje, że rozkład zmiennej children istotnie różni się od rozkładu normalnego.
+
+**Wyniki dla zmiennej income**
+Wartość statystyki D wynosi 0.11337, a p-wartość wynosi 1.372e-11. Odrzucamy hipotezę zerową na poziomie istotności 0.05. Wynik wskazuje, że rozkład zmiennej income istotnie różni się od rozkładu normalnego.
+
+## Wnioski
+
+Spośród analizowanych zmiennych, tylko zmienna age wykazuje zgodność z rozkładem normalnym. Pozostałe zmienne (car, children, income) istotnie odbiegają od rozkładu normalnego, co zostało już wcześniej przedstawione w formie histogramów.
 
 
