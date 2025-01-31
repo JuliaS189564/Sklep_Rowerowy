@@ -642,57 +642,13 @@ wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
 print(wyniki_testu)
 ```
 
-HEAD
-## Rozkład przedstawiony za pomocą histogramu
-
-### Histogram dochodów
-
-Rozkład jest prawostronny, ponieważ większość danych skupa się po lewej stronie, a ogon ciągnie się w prawo.
-Oznacza to, że mediana dla zmiennej dochód jest mniejsza od średniej.
-
-```{r,eval=TRUE, echo = FALSE}
-hist(zbior$income, main = "Income", xlab = "Income", col = "lightblue", border = "black")
-```
-
-## Histogram wieku
-
-większość klientów sklepu rowerowego jest młodsza, aczkolwiek najmłodsza osoba ma 25 lat , a z wiekiem liczba klientów maleje.
-Długi ogon histogramu sugeruje, że starsi klienci są znacznie mniej liczni w porównaniu do młodszych.
-
-```{r,eval=TRUE, echo = FALSE}
-
-hist(zbior$age, main = "Age", xlab = "Age", col = "lightblue", border = "black")
-lata <- min(zbior$age)
-
-```
-
-### Interpretacja wyników
-
-Wiek klientów: Średni wiek kupujących rowery wynosi około **44 lata**, natomiast mediana wieku to 43 lata, co oznacza, że połowa klientów ma mniej niż **43 lata**, a połowa więcej.
-To potwierdza wcześniejsze wnioski, że głównymi nabywcami rowerów są osoby w przedziale **30-50 lat**.
-
-Dochód: Średni dochód klientów to **56 267,61**, a mediana dochodu wynosi 60 000.
-Mediana jest nieco wyższa od średniej, co sugeruje, że wśród klientów znajduje się pewna liczba osób o niższych dochodach, które obniżają średnią wartość.
-
-Liczba dzieci: Średnia liczba dzieci wynosi 1,91, a mediana to 2, co sugeruje, że większość klientów to osoby posiadające jedno lub dwoje dzieci.
-Może to mieć wpływ na preferencje dotyczące wyboru roweru, np.
-większe zainteresowanie rowerami rodzinnymi czy dziecięcymi.
-
-Liczba posiadanych samochodów: Klienci posiadają średnio **1,46** samochodu, a mediana to 1, co oznacza, że większość klientów posiada przynajmniej jedno auto.
-Warto zastanowić się nad strategiami promocyjnymi skierowanymi do osób, które mogą traktować rower jako alternatywny środek transportu.
-
-### Wnioski
-
-Dane potwierdzają, że główną grupę nabywców rowerów stanowią osoby w wieku **30-50 lat**, co powinno być brane pod uwagę w strategiach marketingowych.
-Dochód klientów jest na umiarkowanym poziomie, co oznacza, że w ofercie warto uwzględnić zarówno modele premium, jak i bardziej budżetowe rowery.
-Znaczna część klientów to osoby posiadające dzieci, co sugeruje potencjał w rozwijaniu segmentu rowerów rodzinnych.
-Wielu klientów posiada samochody, co może wskazywać na potrzebę promowania rowerów jako alternatywnego środka transportu.
 
 ```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.align='center'}
 cor.test(data$Age, data$Income, method = "pearson")
 
 
 ```
+
 ### Histogramy z funkcją rozkładu normalnego
 
 ```{r load_data, eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
@@ -745,24 +701,33 @@ rysuj_histogram(zbior, "Sklep Rowerywy")
 
 **Histogram dla zmiennej income**
 
-Rozkład dochodów badanej grupy jest prawoskośny, co oznacza, że większość osób osiąga niższe dochody, podczas gdy wyższe dochody występują rzadziej. Średni dochód wynosi **56,210**, a odchylenie standardowe to **31,017.7**, co wskazuje na dużą zmienność w dochodach. **Dane nie są zgodne z rozkładem normalnym**.
+Średni dochód klientów to **56 267,61**, a mediana dochodu wynosi 60 000.
+Mediana jest nieco wyższa od średniej, co sugeruje, że wśród klientów znajduje się pewna liczba osób o niższych dochodach, które obniżają średnią wartość.
+Rozkład dochodów badanej grupy jest prawoskośny, co oznacza, że większość osób osiąga niższe dochody, podczas gdy wyższe dochody występują rzadziej. Tak jak zostało podane wyżej - średni dochód wynosi **56 267,61**, a odchylenie standardowe to **31,017.7**, co wskazuje na dużą zmienność w dochodach. **Dane nie są zgodne z rozkładem normalnym**.
 
 **Histogram dla zmiennej children**
 
-Najwięcej osób w badanej grupie ma 0 lub 1 dziecko, a liczba osób maleje wraz ze wzrostem liczby dzieci. Średnia liczba dzieci wynosi **1.91**, a odchylenie standardowe to **1.63**. Ze względu na dyskretny charakter zmiennej **dane nie odpowiadają rozkładowi normalnemu**.
+Średnia liczba dzieci wynosi **1,91**, a odchylenie standardowe to **1.63**. Ze względu na dyskretny charakter zmiennej **dane nie odpowiadają rozkładowi normalnemu**. Natomiast mediana to **2**, co sugeruje, że większość klientów to osoby posiadające jedno lub dwoje dzieci. Może to mieć wpływ na preferencje dotyczące wyboru roweru, np.większe zainteresowanie rowerami rodzinnymi czy dziecięcymi.
 
 **Histogram dla zmiennej cars**
 
-Większość osób w badanej grupie posiada od 0 do 2 samochodów, co jest zgodne z ogólną tendencją w społeczeństwie. Średnia liczba samochodów wynosi **1.46**, a odchylenie standardowe to **1.12**. Rozkład tej zmiennej jest dyskretny i **odbiega od kształtu rozkładu normalnego**.
+Klienci posiadają średnio **1,46** samochodu, a odchylenie standardowe to **1.12**. Rozkład tej zmiennej jest dyskretny i **odbiega od kształtu rozkładu normalnego**. Natomiast mediana to 1, co oznacza, że większość klientów posiada przynajmniej jedno auto.
+Warto zastanowić się nad strategiami promocyjnymi skierowanymi do osób, które mogą traktować rower jako alternatywny środek transportu.
 
 **Histogram dla zmiennej age**
 
+Średni wiek kupujących rowery wynosi około **44 lata**, natomiast mediana wieku to 43 lata, co oznacza, że połowa klientów ma mniej niż **43 lata**, a połowa więcej.
+To potwierdza wcześniejsze wnioski, że głównymi nabywcami rowerów są osoby w przedziale **30-50 lat**.
 Rozkład wieku badanej grupy jest lekko prawoskośny, z koncentracją osób w wieku około **44 lat** (średnia wynosi 44.21, a odchylenie standardowe to 11.36). Wartości są bardziej skupione wokół średniej, co czyni **rozkład zbliżonym do normalnego**, choć występują niewielkie odchylenia widoczne na ogonie wykresu po prawej stronie.
 
 
 ### Wnioski
 
 Na podstawie analizy histogramów zmiennych income, children, cars oraz age można stwierdzić, że rozkłady badanych cech w większości **różnią się od rozkładu normalnego**, z wyraźnymi asymetriami i dyskretnością w przypadku liczby dzieci i samochodów, podczas gdy zmienne income i age są bardziej zbliżone do rozkładów ciągłych, choć wykazują pewne odchylenia w postaci skośności.
+Dane potwierdzają, że główną grupę nabywców rowerów stanowią osoby w wieku **30-50 lat**, co powinno być brane pod uwagę w strategiach marketingowych.
+Dochód klientów jest na umiarkowanym poziomie, co oznacza, że w ofercie warto uwzględnić zarówno modele premium, jak i bardziej budżetowe rowery.
+Znaczna część klientów to osoby posiadające dzieci, co sugeruje potencjał w rozwijaniu segmentu rowerów rodzinnych.
+Wielu klientów posiada samochody, co może wskazywać na potrzebę promowania rowerów jako alternatywnego środka transportu.
 
 
 
