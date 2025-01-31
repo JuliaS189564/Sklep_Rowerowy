@@ -578,32 +578,78 @@ Z racji braku wyraźnej korelacji z zarobkami, lepiej byłby zająć się prowad
 
 ## Statystyki Opisowe
 
-```{r,eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE,fig.height=8, fig.align='center'}
-
-library(dplyr)
-library(knitr)
-
-# Podstawowe statystyki opisowe
-summary_stats <- data %>%
-  summarise(
-    Średni_wiek = mean(Age, na.rm = TRUE),
-    Mediana_wiek = median(Age, na.rm = TRUE),
-    Średni_dochód = mean(Income, na.rm = TRUE),
-    Mediana_dochód = median(Income, na.rm = TRUE),
-    Średnia_liczba_dzieci = mean(Children, na.rm = TRUE),
-    Mediana_liczba_dzieci = median(Children, na.rm = TRUE),
-    Średnia_liczba_samochodów = mean(Cars, na.rm = TRUE),
-    Mediana_liczba_samochodów = median(Cars, na.rm = TRUE)
-  )
-
-# Wyświetlenie tabeli
-kable(summary_stats, caption = "Podstawowe statystyki opisowe dla danych")
-
-```
-
 ## Analiza statystyk opisowych nabywców rowerów
 
 W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opisowych dotyczących wieku, dochodu, liczby dzieci oraz liczby posiadanych samochodów wśród klientów sklepu rowerowego.
+
+```{r eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+library(knitr)
+library(e1071)
+
+# Lista statystyk dla każdej zmiennej
+stats_summary <- sapply(zbior[, c("income", "children", "cars", "age")], function(x) {
+  c(
+    Średnia = mean(x, na.rm = TRUE),
+    `Odchylenie standardowe` = sd(x, na.rm = TRUE),
+    Mediana = median(x, na.rm = TRUE),
+    `Przycięta średnia` = mean(x, trim = 0.1, na.rm = TRUE),
+    `Mediana bezwzględnego odchylenia` = mad(x, na.rm = TRUE),
+    Minimum = min(x, na.rm = TRUE),
+    Maksimum = max(x, na.rm = TRUE),
+    Zakres = diff(range(x, na.rm = TRUE)),
+    Skośność = skewness(x, na.rm = TRUE),
+    Kurtoza = kurtosis(x, na.rm = TRUE),
+    `Błąd standardowy` = sd(x, na.rm = TRUE) / sqrt(length(na.omit(x)))
+  )
+})
+
+# Konwersja na ramkę danych i dodanie kolumny z nazwami statystyk
+stats_summary <- data.frame(Statystyka = rownames(stats_summary), stats_summary, row.names = NULL)
+
+# Wyświetlenie tabeli
+kable(stats_summary, digits = 2)
+```
+
+Analiza statystyk opisowych dotyczących klientów sklepu rowerowego.
+Analiza opiera się na zmiennych: dochody, liczba dzieci, liczba samochodów oraz wiek.
+Skośność na poziomie 0.75 wskazuje na lekko prawostronny rozkład dochodów, co oznacza, że większość klientów ma dochody poniżej maksymalnej wartości.
+Oferta powinna być zdywersyfikowana, aby przyciągnąć klientów z różnych grup dochodowych.
+Warto rozważyć ekonomiczne modele rowerów dla klientów z niższymi dochodami oraz modele premium dla bardziej zamożnych.
+
+#### Dochody klientów
+
+Większość klientów ma dochody oscylujące w granicach 60 000 PLN.
+Odchylenie standardowe równe 31 017,70 PLN wskazuje na znaczną różnorodność dochodów.
+Dochody mieszczą się w przedziale od 10.000 PLN do 170.000 PLN.
+Skośność na poziomie 0.75 wskazuje na lekko prawostronny rozkład dochodów, co oznacza, że większość klientów ma dochody poniżej maksymalnej wartości.
+Oferta powinna być zdywersyfikowana, aby przyciągnąć klientów z różnych grup dochodowych.
+Warto rozważyć ekonomiczne modele rowerów dla klientów z niższymi dochodami oraz modele premium dla bardziej zamożnych.
+
+#### Liczba dzieci
+
+Większość klientów to osoby posiadające rodziny z medianą równą 2.
+Liczba dzieci waha się od 0 do 5, a odchylenie standardowe wynosi 1,63, co wskazuje na umiarkowaną różnorodność w tej kategorii.
+Sklep powinien skupić się na promowaniu oferty rodzinnej, takiej jak rowery dziecięce, foteliki rowerowe, przyczepki dla dzieci czy akcesoria dla rodzin.
+
+#### Liczba samochodów
+
+Większość klientów posiada jeden samochód.
+Maksymalna liczba samochodów wynosi 4, a skośność 0,41 wskazuje na lekką przewagę klientów z większą liczbą pojazdów.
+Można promować rowery jako alternatywę dla transportu samochodowego, podkreślając korzyści ekologiczne i zdrowotne.
+
+Oferta powinna uwzględniać potrzeby różnych grup wiekowych i wprowadzić:
+
+-   Rowery trekkingowe i rekreacyjne dla osób w wieku średnim,
+
+-   Lekkie i wygodne modele dla starszych klientów,
+
+-   Sportowe modele dla młodszych.
+
+#### Wiek klientów
+
+Większość klientów to osoby w wieku około 40 lat.
+Minimalny wiek wynosi 25 lat, a maksymalny 89 lat.
+Odchylenie standardowe to 11,36, co wskazuje na umiarkowaną różnorodność wiekową.
 
 ## Testy statystyczne
 
@@ -613,7 +659,6 @@ W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opiso
 
 Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
 Dane nie posiadają rozkładu normalnego.
-
 
 ### Histogramy z funkcją rozkładu normalnego
 
@@ -682,7 +727,6 @@ To potwierdza wcześniejsze wnioski, że głównymi nabywcami rowerów są osoby
 Rozkład wieku badanej grupy jest lekko prawoskośny, z koncentracją osób w wieku około **44 lat** (średnia wynosi 44.21, a odchylenie standardowe to 11.36).
 Wartości są bardziej skupione wokół średniej, co czyni **rozkład zbliżonym do normalnego**, choć występują niewielkie odchylenia widoczne na ogonie wykresu po prawej stronie.
 
-
 ```{r eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 plot_histogram_discrete <- function(data, variable, title) {
   ggplot(data, aes(x = .data[[variable]])) +
@@ -716,7 +760,6 @@ Ze względu na dyskretny charakter zmiennej **dane nie odpowiadają rozkładowi 
 Natomiast mediana to **2**, co sugeruje, że większość klientów to osoby posiadające jedno lub dwoje dzieci.
 Może to mieć wpływ na preferencje dotyczące wyboru roweru, np.większe zainteresowanie rowerami rodzinnymi czy dziecięcymi.
 
-
 ```{r eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 
 print(his4)
@@ -731,7 +774,6 @@ Klienci posiadają średnio **1,46** samochodu, a odchylenie standardowe to **1.
 Rozkład tej zmiennej jest dyskretny i **odbiega od kształtu rozkładu normalnego**.
 Natomiast mediana to 1, co oznacza, że większość klientów posiada przynajmniej jedno auto.
 Warto zastanowić się nad strategiami promocyjnymi skierowanymi do osób, które mogą traktować rower jako alternatywny środek transportu.
-
 
 ### Wnioski
 
@@ -749,7 +791,6 @@ Wielu klientów posiada samochody, co może wskazywać na potrzebę promowania r
 
 Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
 Dane nie posiadają rozkładu normalnego.
-
 
 ```{r,eval=TRUE, echo = FALSE}
 test_shapiro_wilka <- function(baza, zbior) {
@@ -821,7 +862,6 @@ jazdy do pracy, mógłby wpłynać na zwiększenie sprzedaży wśród tej grupy 
 Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
 Dane nie posiadają rozkładu normalnego.
 
-
 ```{r eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 
 perform_ks_test <- function(zbior, variable_name) {
@@ -846,22 +886,26 @@ for (var_name in names(variables)) {
 }
 
 ```
+
 ## Intepretacja wyników
 
-**Wyniki dla zmiennej age**
-Wartość statystyki D wynosi 0.026729, a p-wartość = 0.4726. Ponieważ p-wartość jest większa od poziomu istotności 0.05, brak podstaw do odrzucenia hipotezy zerowej. Oznacza to, że rozkład zmiennej age jest najbardziej zbliżony do rozkładu normalnego.
+**Wyniki dla zmiennej age** Wartość statystyki D wynosi 0.026729, a p-wartość = 0.4726.
+Ponieważ p-wartość jest większa od poziomu istotności 0.05, brak podstaw do odrzucenia hipotezy zerowej.
+Oznacza to, że rozkład zmiennej age jest najbardziej zbliżony do rozkładu normalnego.
 
-**Wyniki dla zmiennej car**
-Wartość statystyki D wynosi 0.1563, a p-wartość jest mniejsza niż 2.2e-16. Odrzucamy hipotezę zerową na poziomie istotności 0.05. Wynik wskazuje, że rozkład zmiennej car istotnie różni się od rozkładu normalnego.
+**Wyniki dla zmiennej car** Wartość statystyki D wynosi 0.1563, a p-wartość jest mniejsza niż 2.2e-16.
+Odrzucamy hipotezę zerową na poziomie istotności 0.05.
+Wynik wskazuje, że rozkład zmiennej car istotnie różni się od rozkładu normalnego.
 
-**Wyniki dla zmiennej children**
-Wartość statystyki D wynosi 0.18055, a p-wartość jest mniejsza niż 2.2e-16. Odrzucamy hipotezę zerową na poziomie istotności 0.05. Wynik wskazuje, że rozkład zmiennej children istotnie różni się od rozkładu normalnego.
+**Wyniki dla zmiennej children** Wartość statystyki D wynosi 0.18055, a p-wartość jest mniejsza niż 2.2e-16.
+Odrzucamy hipotezę zerową na poziomie istotności 0.05.
+Wynik wskazuje, że rozkład zmiennej children istotnie różni się od rozkładu normalnego.
 
-**Wyniki dla zmiennej income**
-Wartość statystyki D wynosi 0.11337, a p-wartość wynosi 1.372e-11. Odrzucamy hipotezę zerową na poziomie istotności 0.05. Wynik wskazuje, że rozkład zmiennej income istotnie różni się od rozkładu normalnego.
+**Wyniki dla zmiennej income** Wartość statystyki D wynosi 0.11337, a p-wartość wynosi 1.372e-11.
+Odrzucamy hipotezę zerową na poziomie istotności 0.05.
+Wynik wskazuje, że rozkład zmiennej income istotnie różni się od rozkładu normalnego.
 
 ## Wnioski
 
-Spośród analizowanych zmiennych, tylko zmienna age wykazuje zgodność z rozkładem normalnym. Pozostałe zmienne (car, children, income) istotnie odbiegają od rozkładu normalnego, co zostało już wcześniej przedstawione w formie histogramów.
-
-
+Spośród analizowanych zmiennych, tylko zmienna age wykazuje zgodność z rozkładem normalnym.
+Pozostałe zmienne (car, children, income) istotnie odbiegają od rozkładu normalnego, co zostało już wcześniej przedstawione w formie histogramów.
