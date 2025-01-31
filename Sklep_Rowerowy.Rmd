@@ -566,9 +566,9 @@ wykres_6
 
 Powyższy wykres przedstawia rozkład zarobków w dwóch grupach: osób, które zdecydowały się na zakup roweru ("Yes"), oraz tych, które roweru nie kupiły ("No").
 Wykres skrzynkowy umożliwia ocenę mediany, kwartylów, a także identyfikację wartości odstających w obu grupach.
--   Mediany zarobków w obu grupach są zbliżone, co wskazuje na brak istotnych różnic w przeciętnych zarobkach między osobami, które kupiły rower, a tymi, które tego nie zrobiły.
--   Rozpiętość zarobków, reprezentowana przez wąsy skrzynki, również jest podobna dla obu grup, co sugeruje, że poziom zarobków nie jest głównym czynnikiem wpływającym na decyzję o zakupie roweru.
--   W obu grupach zaobserwowano wartości odstające, które wskazują na obecność osób o skrajnie wysokich zarobkach.
+- Mediany zarobków w obu grupach są zbliżone, co wskazuje na brak istotnych różnic w przeciętnych zarobkach między osobami, które kupiły rower, a tymi, które tego nie zrobiły.
+- Rozpiętość zarobków, reprezentowana przez wąsy skrzynki, również jest podobna dla obu grup, co sugeruje, że poziom zarobków nie jest głównym czynnikiem wpływającym na decyzję o zakupie roweru.
+- W obu grupach zaobserwowano wartości odstające, które wskazują na obecność osób o skrajnie wysokich zarobkach.
 Wartości te nie wpływają jednak na główny trend wykresu.
 
 #### **5.2. Wnioski i rekomendacje**
@@ -642,16 +642,42 @@ wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
 print(wyniki_testu)
 ```
 
-
 ```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.align='center'}
 cor.test(data$Age, data$Income, method = "pearson")
 
 
 ```
 
+```{r,eval=TRUE, echo = FALSE}
+zbior$purchased_bike <- ifelse(zbior$purchased_bike == "Yes", 1, 0)
+```
+
+```{r,eval=TRUE, echo = FALSE}
+regresja <- lm(purchased_bike ~ marital_status + log(income) + children + cars, data = zbior)
+summary(regresja)
+```
+
+Model jest statystycznie istotny, ponieważ wartość p dla F-statystyki wynosi:
+
+```         
+< 2.2e-16
+```
+
+Na tej podstawie możemy stwierdzić, że przynajmniej jedna ze zmiennych w modelu jest istotnie powiązana z decyzją o zakupie roweru.
+
+Jeżeli dochód wzrośnie o 10% to zwiększa się prawdopobieństwo zakupu roweru o 1.35%.
+Przydatne byłoby rozważenie wprowadzenia oferty premium dla osób z większym dochodem.
+
+Co interesujące posiadanie dzieci ma ujemny wpływ na zakup roweru, może to wynikać z innych priorytetów, które mają osoby z dziećmi lub potrzeby większego środka transportu jakim jest samochód, gdy ma się dziecko.
+Dla zwiększenia sprzedaży wśród osób z dziećmi pomocne mogłoby się okazać wprowadzenie oferty z rowerami rodzinnymi.
+
+Posiadanie samochodu również ma negatywny wpływ na zakup roweru,w związku z zwiększeniem liczby samochodów o 1, zmniejsza się prawdopdobieństwo zakupu roweru o 10.63%.
+Kampania promująca rower jako alternatywny środek transportu dla samochodu podczas np.
+jazdy do pracy, mógłby wpłynać na zwiększenie sprzedaży wśród tej grupy osób.
+
 ### Histogramy z funkcją rozkładu normalnego
 
-```{r load_data, eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+```{r eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
 
 library(ggplot2)
 library(moments)
@@ -703,23 +729,30 @@ rysuj_histogram(zbior, "Sklep Rowerywy")
 
 Średni dochód klientów to **56 267,61**, a mediana dochodu wynosi 60 000.
 Mediana jest nieco wyższa od średniej, co sugeruje, że wśród klientów znajduje się pewna liczba osób o niższych dochodach, które obniżają średnią wartość.
-Rozkład dochodów badanej grupy jest prawoskośny, co oznacza, że większość osób osiąga niższe dochody, podczas gdy wyższe dochody występują rzadziej. Tak jak zostało podane wyżej - średni dochód wynosi **56 267,61**, a odchylenie standardowe to **31,017.7**, co wskazuje na dużą zmienność w dochodach. **Dane nie są zgodne z rozkładem normalnym**.
+Rozkład dochodów badanej grupy jest prawoskośny, co oznacza, że większość osób osiąga niższe dochody, podczas gdy wyższe dochody występują rzadziej.
+Tak jak zostało podane wyżej - średni dochód wynosi **56 267,61**, a odchylenie standardowe to **31,017.7**, co wskazuje na dużą zmienność w dochodach.
+**Dane nie są zgodne z rozkładem normalnym**.
 
 **Histogram dla zmiennej children**
 
-Średnia liczba dzieci wynosi **1,91**, a odchylenie standardowe to **1.63**. Ze względu na dyskretny charakter zmiennej **dane nie odpowiadają rozkładowi normalnemu**. Natomiast mediana to **2**, co sugeruje, że większość klientów to osoby posiadające jedno lub dwoje dzieci. Może to mieć wpływ na preferencje dotyczące wyboru roweru, np.większe zainteresowanie rowerami rodzinnymi czy dziecięcymi.
+Średnia liczba dzieci wynosi **1,91**, a odchylenie standardowe to **1.63**.
+Ze względu na dyskretny charakter zmiennej **dane nie odpowiadają rozkładowi normalnemu**.
+Natomiast mediana to **2**, co sugeruje, że większość klientów to osoby posiadające jedno lub dwoje dzieci.
+Może to mieć wpływ na preferencje dotyczące wyboru roweru, np.większe zainteresowanie rowerami rodzinnymi czy dziecięcymi.
 
 **Histogram dla zmiennej cars**
 
-Klienci posiadają średnio **1,46** samochodu, a odchylenie standardowe to **1.12**. Rozkład tej zmiennej jest dyskretny i **odbiega od kształtu rozkładu normalnego**. Natomiast mediana to 1, co oznacza, że większość klientów posiada przynajmniej jedno auto.
+Klienci posiadają średnio **1,46** samochodu, a odchylenie standardowe to **1.12**.
+Rozkład tej zmiennej jest dyskretny i **odbiega od kształtu rozkładu normalnego**.
+Natomiast mediana to 1, co oznacza, że większość klientów posiada przynajmniej jedno auto.
 Warto zastanowić się nad strategiami promocyjnymi skierowanymi do osób, które mogą traktować rower jako alternatywny środek transportu.
 
 **Histogram dla zmiennej age**
 
 Średni wiek kupujących rowery wynosi około **44 lata**, natomiast mediana wieku to 43 lata, co oznacza, że połowa klientów ma mniej niż **43 lata**, a połowa więcej.
 To potwierdza wcześniejsze wnioski, że głównymi nabywcami rowerów są osoby w przedziale **30-50 lat**.
-Rozkład wieku badanej grupy jest lekko prawoskośny, z koncentracją osób w wieku około **44 lat** (średnia wynosi 44.21, a odchylenie standardowe to 11.36). Wartości są bardziej skupione wokół średniej, co czyni **rozkład zbliżonym do normalnego**, choć występują niewielkie odchylenia widoczne na ogonie wykresu po prawej stronie.
-
+Rozkład wieku badanej grupy jest lekko prawoskośny, z koncentracją osób w wieku około **44 lat** (średnia wynosi 44.21, a odchylenie standardowe to 11.36).
+Wartości są bardziej skupione wokół średniej, co czyni **rozkład zbliżonym do normalnego**, choć występują niewielkie odchylenia widoczne na ogonie wykresu po prawej stronie.
 
 ### Wnioski
 
@@ -728,17 +761,3 @@ Dane potwierdzają, że główną grupę nabywców rowerów stanowią osoby w wi
 Dochód klientów jest na umiarkowanym poziomie, co oznacza, że w ofercie warto uwzględnić zarówno modele premium, jak i bardziej budżetowe rowery.
 Znaczna część klientów to osoby posiadające dzieci, co sugeruje potencjał w rozwijaniu segmentu rowerów rodzinnych.
 Wielu klientów posiada samochody, co może wskazywać na potrzebę promowania rowerów jako alternatywnego środka transportu.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
