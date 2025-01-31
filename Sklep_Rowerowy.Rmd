@@ -560,15 +560,15 @@ wykres_6
 
 ```
 
-## 5. Aaliza zakupu rowerów w zależności od zarobków z odstającymi wartościami\*\*
+## 5. Aaliza zakupu rowerów w zależności od zarobków z odstającymi wartościami
 
 #### **5.1. Wykres i interpretacja danych**
 
 Powyższy wykres przedstawia rozkład zarobków w dwóch grupach: osób, które zdecydowały się na zakup roweru ("Yes"), oraz tych, które roweru nie kupiły ("No").
 Wykres skrzynkowy umożliwia ocenę mediany, kwartylów, a także identyfikację wartości odstających w obu grupach.
-- Mediany zarobków w obu grupach są zbliżone, co wskazuje na brak istotnych różnic w przeciętnych zarobkach między osobami, które kupiły rower, a tymi, które tego nie zrobiły.
-- Rozpiętość zarobków, reprezentowana przez wąsy skrzynki, również jest podobna dla obu grup, co sugeruje, że poziom zarobków nie jest głównym czynnikiem wpływającym na decyzję o zakupie roweru.
-- W obu grupach zaobserwowano wartości odstające, które wskazują na obecność osób o skrajnie wysokich zarobkach.
+-   Mediany zarobków w obu grupach są zbliżone, co wskazuje na brak istotnych różnic w przeciętnych zarobkach między osobami, które kupiły rower, a tymi, które tego nie zrobiły.
+-   Rozpiętość zarobków, reprezentowana przez wąsy skrzynki, również jest podobna dla obu grup, co sugeruje, że poziom zarobków nie jest głównym czynnikiem wpływającym na decyzję o zakupie roweru.
+-   W obu grupach zaobserwowano wartości odstające, które wskazują na obecność osób o skrajnie wysokich zarobkach.
 Wartości te nie wpływają jednak na główny trend wykresu.
 
 #### **5.2. Wnioski i rekomendacje**
@@ -615,7 +615,6 @@ W ramach analizy statystycznej przeprowadzono obliczenia podstawowych miar opiso
 
 Wartość p jest mniejsza niż 0.05, dlatego odrzucamy hipotezę zerową na rzecz hipotezy alternatywnej.
 Dane nie posiadają rozkładu normalnego.
-W związku z tym, średnia arytmetyczna jako miara tendencji centralnej nie będzie reprezentatywna i konieczne będzie wykorzystanie mediany, ponieważ będzie skuteczniej odzwierciedlać typową wartość w danych.
 
 ```{r,eval=TRUE, echo = FALSE}
 test_shapiro_wilka <- function(baza, zbior) {
@@ -641,29 +640,6 @@ wyniki <- rbind(wyniki, nowy_wiersz)
 
 wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
 print(wyniki_testu)
-```
-
-## Rozkład przedstawiony za pomocą histogramu
-
-### Histogram dochodów
-
-Rozkład jest prawostronny, ponieważ większość danych skupa się po lewej stronie, a ogon ciągnie się w prawo.
-Oznacza to, że mediana dla zmiennej dochód jest mniejsza od średniej.
-
-```{r,eval=TRUE, echo = FALSE}
-hist(zbior$income, main = "Income", xlab = "Income", col = "lightblue", border = "black")
-```
-
-## Histogram wieku
-
-większość klientów sklepu rowerowego jest młodsza, aczkolwiek najmłodsza osoba ma 25 lat , a z wiekiem liczba klientów maleje.
-Długi ogon histogramu sugeruje, że starsi klienci są znacznie mniej liczni w porównaniu do młodszych.
-
-```{r,eval=TRUE, echo = FALSE}
-
-hist(zbior$age, main = "Age", xlab = "Income", col = "lightblue", border = "black")
-lata <- min(zbior$age)
-
 ```
 
 ### Interpretacja wyników
@@ -693,3 +669,87 @@ cor.test(data$Age, data$Income, method = "pearson")
 
 
 ```
+### Histogramy z funkcją rozkładu normalnego
+
+```{r load_data, eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE ,fig.height=8, fig.align='center'}
+
+library(ggplot2)
+library(moments)
+
+rysuj_histogram <- function(baza, nazwa_bazy) {
+  kolumny_liczbowe <- sapply(baza, is.numeric)
+  baza_liczbowa <- baza[, kolumny_liczbowe]
+  
+  if ("id" %in% names(baza_liczbowa)) {
+    baza_liczbowa <- baza_liczbowa[, names(baza_liczbowa) != "id"]
+  }
+
+  par(mfrow = c(1, 2))  
+  for (zmienna in names(baza_liczbowa)) {
+    hist(baza_liczbowa[[zmienna]], 
+         main = paste("Histogram -", zmienna, "(", nazwa_bazy, ")"), 
+         xlab = zmienna, 
+         col = "lightblue", 
+         probability = TRUE, 
+         breaks = "FD",  
+         border = NA     
+    )
+    
+    mean_val <- mean(baza_liczbowa[[zmienna]], na.rm = TRUE)
+    sd_val <- sd(baza_liczbowa[[zmienna]], na.rm = TRUE)
+    
+    curve(dnorm(x, mean = mean_val, sd = sd_val), 
+          col = "red", 
+          lwd = 2, 
+          add = TRUE)
+    
+    legend("topright", 
+           legend = paste("Śr:", round(mean_val, 2), "SD:", round(sd_val, 2)), 
+           col = "red", 
+           lty = 1, 
+           cex = 0.8)
+  }
+}
+
+
+rysuj_histogram(zbior, "Sklep Rowerywy")
+
+
+```
+
+## Interpretacja wyników
+
+**Histogram dla zmiennej income**
+
+Rozkład dochodów badanej grupy jest prawoskośny, co oznacza, że większość osób osiąga niższe dochody, podczas gdy wyższe dochody występują rzadziej. Średni dochód wynosi **56,210**, a odchylenie standardowe to **31,017.7**, co wskazuje na dużą zmienność w dochodach. **Dane nie są zgodne z rozkładem normalnym**.
+
+**Histogram dla zmiennej children**
+
+Najwięcej osób w badanej grupie ma 0 lub 1 dziecko, a liczba osób maleje wraz ze wzrostem liczby dzieci. Średnia liczba dzieci wynosi **1.91**, a odchylenie standardowe to **1.63**. Ze względu na dyskretny charakter zmiennej **dane nie odpowiadają rozkładowi normalnemu**.
+
+**Histogram dla zmiennej cars**
+
+Większość osób w badanej grupie posiada od 0 do 2 samochodów, co jest zgodne z ogólną tendencją w społeczeństwie. Średnia liczba samochodów wynosi **1.46**, a odchylenie standardowe to **1.12**. Rozkład tej zmiennej jest dyskretny i **odbiega od kształtu rozkładu normalnego**.
+
+**Histogram dla zmiennej age**
+
+Rozkład wieku badanej grupy jest lekko prawoskośny, z koncentracją osób w wieku około **44 lat** (średnia wynosi 44.21, a odchylenie standardowe to 11.36). Wartości są bardziej skupione wokół średniej, co czyni **rozkład zbliżonym do normalnego**, choć występują niewielkie odchylenia widoczne na ogonie wykresu po prawej stronie.
+
+
+### Wnioski
+
+Na podstawie analizy histogramów zmiennych income, children, cars oraz age można stwierdzić, że rozkłady badanych cech w większości **różnią się od rozkładu normalnego**, z wyraźnymi asymetriami i dyskretnością w przypadku liczby dzieci i samochodów, podczas gdy zmienne income i age są bardziej zbliżone do rozkładów ciągłych, choć wykazują pewne odchylenia w postaci skośności.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
