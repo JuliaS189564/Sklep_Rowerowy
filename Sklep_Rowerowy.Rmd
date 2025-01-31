@@ -642,6 +642,30 @@ wyniki_testu <- test_shapiro_wilka(baza = NULL, zbior = zbior)
 print(wyniki_testu)
 ```
 
+HEAD
+## Rozkład przedstawiony za pomocą histogramu
+
+### Histogram dochodów
+
+Rozkład jest prawostronny, ponieważ większość danych skupa się po lewej stronie, a ogon ciągnie się w prawo.
+Oznacza to, że mediana dla zmiennej dochód jest mniejsza od średniej.
+
+```{r,eval=TRUE, echo = FALSE}
+hist(zbior$income, main = "Income", xlab = "Income", col = "lightblue", border = "black")
+```
+
+## Histogram wieku
+
+większość klientów sklepu rowerowego jest młodsza, aczkolwiek najmłodsza osoba ma 25 lat , a z wiekiem liczba klientów maleje.
+Długi ogon histogramu sugeruje, że starsi klienci są znacznie mniej liczni w porównaniu do młodszych.
+
+```{r,eval=TRUE, echo = FALSE}
+
+hist(zbior$age, main = "Age", xlab = "Age", col = "lightblue", border = "black")
+lata <- min(zbior$age)
+
+```
+
 ### Interpretacja wyników
 
 Wiek klientów: Średni wiek kupujących rowery wynosi około **44 lata**, natomiast mediana wieku to 43 lata, co oznacza, że połowa klientów ma mniej niż **43 lata**, a połowa więcej.
