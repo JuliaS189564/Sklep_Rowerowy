@@ -661,7 +661,7 @@ Długi ogon histogramu sugeruje, że starsi klienci są znacznie mniej liczni w 
 
 ```{r,eval=TRUE, echo = FALSE}
 
-hist(zbior$age, main = "Age", xlab = "Income", col = "lightblue", border = "black")
+hist(zbior$age, main = "Age", xlab = "Age", col = "lightblue", border = "black")
 lata <- min(zbior$age)
 
 ```
